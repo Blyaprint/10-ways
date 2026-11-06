@@ -357,7 +357,7 @@ func _build_interface() -> void:
 	discard_zone.add_child(discard_label)
 	hand_row.add_child(discard_zone)
 	hand_list = HandFan.new()
-	hand_list.host = self
+	hand_list.set("host", self)
 	hand_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hand_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	hand_list.custom_minimum_size.y = 156
