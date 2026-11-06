@@ -88,7 +88,7 @@ var inventory_zone: DropZone
 var hand_zone: DropZone
 var discard_zone: DropZone
 var inventory_list: VBoxContainer
-var hand_list: HBoxContainer
+var hand_list: Control
 var graph: GraphCanvas
 var status_label: Label
 var report_label: Label
