@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://c74dr2cf1d81"]
+
+[ext_resource type="Script" uid="uid://baomwpo25b2l7" path="res://scripts/cards/card.gd" id="1_yiag5"]
+[ext_resource type="Texture2D" uid="uid://b8ebbot1q0qb1" path="res://resources/card.png" id="2_5xgwh"]
+[ext_resource type="FontFile" uid="uid://7pi5qn7aeuvs" path="res://resources/Pixtura12.ttf" id="3_7s3sq"]
+
+[node name="Card" type="Control" unique_id=958069840]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_yiag5")
+
+[node name="Border" type="Panel" parent="." unique_id=2001030405]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Card" type="Sprite2D" parent="Border" unique_id=394951866]
+position = Vector2(24.999996, 49.999992)
+scale = Vector2(0.99999994, 0.99999994)
+texture = ExtResource("2_5xgwh")
+
+[node name="Content" type="Control" parent="Border" unique_id=2144271607]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Symbol" type="Label" parent="Border/Content" unique_id=1390276003]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Title" type="Label" parent="Border/Content" unique_id=734972125]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.48570347, 0.48570353, 0.4857034, 1)
+theme_override_fonts/font = ExtResource("3_7s3sq")
+theme_override_font_sizes/font_size = 24
+metadata/_edit_use_anchors_ = true
+
+[node name="Description" type="Label" parent="Border/Content" unique_id=2141714307]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Effect" type="Label" parent="Border/Content" unique_id=303394000]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

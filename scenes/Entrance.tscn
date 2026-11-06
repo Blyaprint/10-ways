@@ -1,0 +1,444 @@
+[gd_scene format=3 uid="uid://vjc7ui1jlwj6"]
+
+[ext_resource type="Script" uid="uid://dh15ov1mf5bo4" path="res://scripts/entrance.gd" id="1_55iln"]
+[ext_resource type="FontFile" uid="uid://djeohuk251sig" path="res://resources/medieval-pixel.ttf" id="2_nuppg"]
+[ext_resource type="FontFile" uid="uid://cxrvy0x4ml2xi" path="res://resources/zx_spectrum-7.ttf" id="2_rsyof"]
+[ext_resource type="Script" uid="uid://c8xqp34lwo11l" path="res://scripts/cards/card_hand.gd" id="4_ds2wf"]
+[ext_resource type="Texture2D" uid="uid://cwqks5vav6avl" path="res://resources/ramka_with_girl.png" id="5_5abnr"]
+[ext_resource type="Texture2D" uid="uid://kdciqcv48jwl" path="res://resources/NPC_Sprites/girl1.png" id="6_4i1fs"]
+[ext_resource type="Texture2D" uid="uid://cpqtjkgx4w5yj" path="res://resources/NPC_Sprites/girl2.png" id="7_m0j66"]
+[ext_resource type="Texture2D" uid="uid://mxhljd5u3knn" path="res://resources/NPC_Sprites/girl3.png" id="8_cttl8"]
+[ext_resource type="Texture2D" uid="uid://bfo25d0j3km00" path="res://resources/NPC_Sprites/girl4.png" id="9_ttoil"]
+[ext_resource type="Texture2D" uid="uid://beilcbj0e85m0" path="res://resources/NPC_Sprites/girl5.png" id="10_qg0vv"]
+[ext_resource type="Texture2D" uid="uid://bihqvebospc1a" path="res://resources/NPC_Sprites/girl6.png" id="11_irqvm"]
+[ext_resource type="Texture2D" uid="uid://bbp84ga8y5168" path="res://resources/NPC_Sprites/girl7.png" id="12_ddgqk"]
+[ext_resource type="Texture2D" uid="uid://c87fv2gji8lsf" path="res://resources/NPC_Sprites/girl8.png" id="13_yk7w1"]
+[ext_resource type="Texture2D" uid="uid://c8wkuissx2wrm" path="res://resources/NPC_Sprites/girl9.png" id="14_er3mx"]
+[ext_resource type="Texture2D" uid="uid://bk2pss2unxrl7" path="res://resources/NPC_Sprites/girl10.png" id="15_q0yd2"]
+[ext_resource type="Texture2D" uid="uid://567dmr55oh2j" path="res://resources/NPC_Sprites/girl11.png" id="16_7h82u"]
+[ext_resource type="Texture2D" uid="uid://wlxeavk1oe2l" path="res://resources/NPC_Sprites/girl12.png" id="17_tsjby"]
+[ext_resource type="Texture2D" uid="uid://cqomnh40r5np1" path="res://resources/NPC_Sprites/girl13.png" id="18_jgs3c"]
+[ext_resource type="Texture2D" uid="uid://h6telca4lafg" path="res://resources/NPC_Sprites/girl14.png" id="19_xtdga"]
+[ext_resource type="Texture2D" uid="uid://d3127cqjer5a5" path="res://resources/NPC_Sprites/girl15.png" id="20_yjnmt"]
+[ext_resource type="Texture2D" uid="uid://d2aibjxqks57o" path="res://resources/NPC_Sprites/girl16.png" id="21_diatn"]
+[ext_resource type="Texture2D" uid="uid://coyh6uke3o2nj" path="res://resources/NPC_Sprites/girl17.png" id="22_kl6hc"]
+[ext_resource type="Texture2D" uid="uid://8pyga51q43ey" path="res://resources/NPC_Sprites/girl18.png" id="23_gdjr2"]
+[ext_resource type="Texture2D" uid="uid://cbgl5psxy446k" path="res://resources/NPC_Sprites/girl19.png" id="24_tlsx8"]
+[ext_resource type="Texture2D" uid="uid://b0ph2d4y06470" path="res://resources/NPC_Sprites/girl20.png" id="25_hgvtu"]
+[ext_resource type="Texture2D" uid="uid://fljuc8diaahu" path="res://resources/NPC_Sprites/girl21.png" id="26_8yna2"]
+[ext_resource type="Texture2D" uid="uid://bfip2guhdic6e" path="res://resources/NPC_Sprites/girl22.png" id="27_xam53"]
+[ext_resource type="Texture2D" uid="uid://bkulhhrwys66m" path="res://resources/NPC_Sprites/girl23.png" id="28_oo4wm"]
+[ext_resource type="Texture2D" uid="uid://dmujlmuit8nn2" path="res://resources/NPC_Sprites/girl24.png" id="29_1k550"]
+[ext_resource type="Texture2D" uid="uid://sq8g6uohnpub" path="res://resources/NPC_Sprites/girl25.png" id="30_qatq4"]
+[ext_resource type="Texture2D" uid="uid://b8luta2uncd4x" path="res://resources/NPC_Sprites/girl26.png" id="31_wtwcd"]
+[ext_resource type="Texture2D" uid="uid://bik5m5kaujeug" path="res://resources/NPC_Sprites/girl27.png" id="32_2efqh"]
+[ext_resource type="Texture2D" uid="uid://dlm0pa071mvyc" path="res://resources/NPC_Sprites/girl28.png" id="33_oanw1"]
+[ext_resource type="Texture2D" uid="uid://du8ha0d52fpgk" path="res://resources/NPC_Sprites/girl29.png" id="34_2gd11"]
+[ext_resource type="Texture2D" uid="uid://cjtmmcwncsuuh" path="res://resources/NPC_Sprites/girl30.png" id="35_4hkeg"]
+[ext_resource type="Texture2D" uid="uid://b1f1lj88kf82f" path="res://resources/NPC_Sprites/girl31.png" id="36_ddyx5"]
+[ext_resource type="Texture2D" uid="uid://cvbjalxwsbv6y" path="res://resources/NPC_Sprites/girl32.png" id="37_4fql4"]
+[ext_resource type="Texture2D" uid="uid://bxc5dnguyapbg" path="res://resources/NPC_Sprites/girl33.png" id="38_oyp5n"]
+[ext_resource type="Texture2D" uid="uid://j6hlmv3qylyt" path="res://resources/NPC_Sprites/girl34.png" id="39_t2254"]
+[ext_resource type="Texture2D" uid="uid://bd21ro0a71eq1" path="res://resources/NPC_Sprites/girl35.png" id="40_41t5c"]
+[ext_resource type="Texture2D" uid="uid://cgkufbk78i1q1" path="res://resources/NPC_Sprites/girl36.png" id="41_ploqj"]
+[ext_resource type="Texture2D" uid="uid://djkx5hf2ulm4u" path="res://resources/NPC_Sprites/girl37.png" id="42_o25kk"]
+[ext_resource type="Texture2D" uid="uid://r6ckdtc3alya" path="res://resources/NPC_Sprites/girl38.png" id="43_gmjqw"]
+[ext_resource type="Texture2D" uid="uid://cqe0dplvldc1j" path="res://resources/NPC_Sprites/girl39.png" id="44_wycmg"]
+[ext_resource type="Texture2D" uid="uid://bhn0qkhb1bxi" path="res://resources/NPC_Sprites/girl40.png" id="45_ld2hq"]
+[ext_resource type="Texture2D" uid="uid://brkk6pf4mg1kf" path="res://resources/NPC_Sprites/girl41.png" id="46_1ufp7"]
+[ext_resource type="Texture2D" uid="uid://b6gvmisnlpjbe" path="res://resources/NPC_Sprites/girl42.png" id="47_4as1p"]
+[ext_resource type="Texture2D" uid="uid://l0hj4jhas01" path="res://resources/NPC_Sprites/girl43.png" id="48_n570b"]
+[ext_resource type="Texture2D" uid="uid://yka2w3v7bj26" path="res://resources/NPC_Sprites/girl44.png" id="49_5hssy"]
+[ext_resource type="Texture2D" uid="uid://rs652tjycmaj" path="res://resources/NPC_Sprites/girl45.png" id="50_s6p10"]
+[ext_resource type="Texture2D" uid="uid://dlhi3xs8rflbx" path="res://resources/NPC_Sprites/girl46.png" id="51_o627o"]
+[ext_resource type="Texture2D" uid="uid://dgpak7osokqsj" path="res://resources/NPC_Sprites/girl47.png" id="52_ky01a"]
+[ext_resource type="Texture2D" uid="uid://dc2fs5revv7nd" path="res://resources/NPC_Sprites/girl48.png" id="53_d4g6v"]
+[ext_resource type="Texture2D" uid="uid://ca2le4jurlsff" path="res://resources/NPC_Sprites/girl49.png" id="54_r0xwj"]
+[ext_resource type="Texture2D" uid="uid://cqxj85mfojct8" path="res://resources/NPC_Sprites/girl50.png" id="55_dxtm6"]
+[ext_resource type="Texture2D" uid="uid://ymt68djnjx2p" path="res://resources/NPC_Sprites/girl51.png" id="56_m3uwm"]
+[ext_resource type="Texture2D" uid="uid://d1wcgsp783iqx" path="res://resources/NPC_Sprites/girl52.png" id="57_gfq6x"]
+[ext_resource type="Texture2D" uid="uid://cyp0lbs7ni5om" path="res://resources/NPC_Sprites/girl53.png" id="58_blxtu"]
+[ext_resource type="Texture2D" uid="uid://bbdu4jxlhry5t" path="res://resources/NPC_Sprites/girl54.png" id="59_4mfr5"]
+[ext_resource type="Texture2D" uid="uid://ddtd282wr2473" path="res://resources/NPC_Sprites/girl55.png" id="60_7kgbc"]
+[ext_resource type="Texture2D" uid="uid://oluj0whyap10" path="res://resources/NPC_Sprites/girl56.png" id="61_t7nqg"]
+[ext_resource type="Texture2D" uid="uid://ctnmngfhim1x5" path="res://resources/NPC_Sprites/girl57.png" id="62_sipay"]
+[ext_resource type="Texture2D" uid="uid://dff7avsu775g4" path="res://resources/NPC_Sprites/girl58.png" id="63_saegm"]
+[ext_resource type="Texture2D" uid="uid://qcmcqteb55p3" path="res://resources/NPC_Sprites/girl59.png" id="64_ivqes"]
+[ext_resource type="Texture2D" uid="uid://dxm7qnciwnbox" path="res://resources/NPC_Sprites/girl60.png" id="65_3ioir"]
+[ext_resource type="Texture2D" uid="uid://dctw8mg4ivwx6" path="res://resources/NPC_Sprites/girl61.png" id="66_rktw7"]
+[ext_resource type="Texture2D" uid="uid://lpdtumhgw08w" path="res://resources/NPC_Sprites/girl62.png" id="67_lgytr"]
+[ext_resource type="Texture2D" uid="uid://10gmyu1xp8aq" path="res://resources/NPC_Sprites/girl63.png" id="68_ndiko"]
+[ext_resource type="Texture2D" uid="uid://cforep6v0h40x" path="res://resources/NPC_Sprites/girl64.png" id="69_v2v3x"]
+[ext_resource type="Texture2D" uid="uid://75gb5flrgjd5" path="res://resources/NPC_Sprites/girl65.png" id="70_vd8id"]
+[ext_resource type="Texture2D" uid="uid://uee51fiqrmbm" path="res://resources/NPC_Sprites/girl66.png" id="71_aem0e"]
+[ext_resource type="Texture2D" uid="uid://bk00y61bvd8c0" path="res://resources/NPC_Sprites/girl67.png" id="72_it0du"]
+[ext_resource type="Texture2D" uid="uid://doe4fj5igad8g" path="res://resources/NPC_Sprites/girl68.png" id="73_dbyq2"]
+[ext_resource type="Texture2D" uid="uid://cehouk3ppaus5" path="res://resources/ramka_small_name.png" id="74_q4obr"]
+[ext_resource type="FontFile" uid="uid://7pi5qn7aeuvs" path="res://resources/Pixtura12.ttf" id="75_1aum0"]
+[ext_resource type="Texture2D" uid="uid://baeysja8hh6vi" path="res://resources/FRAME3_door.png" id="76_ds2wf"]
+[ext_resource type="Material" uid="uid://dw3ciuav1yrex" path="res://shader_retro.tres" id="77_ds2wf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kyplu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_4i1fs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_m0j66")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_cttl8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ttoil")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_qg0vv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_irqvm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_ddgqk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_yk7w1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_er3mx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_q0yd2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_7h82u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_tsjby")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_jgs3c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_xtdga")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_yjnmt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_diatn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_kl6hc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_gdjr2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_tlsx8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_hgvtu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_8yna2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_xam53")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_oo4wm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_1k550")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_qatq4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_wtwcd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_2efqh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_oanw1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_2gd11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_4hkeg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_ddyx5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_4fql4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_oyp5n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_t2254")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_41t5c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_ploqj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_o25kk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_gmjqw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_wycmg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_ld2hq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_1ufp7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_4as1p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_n570b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_5hssy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_s6p10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_o627o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_ky01a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_d4g6v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_r0xwj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_dxtm6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_m3uwm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_gfq6x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_blxtu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_4mfr5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_7kgbc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_t7nqg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_sipay")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_saegm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_ivqes")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_3ioir")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_rktw7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("67_lgytr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_ndiko")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_v2v3x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_vd8id")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_aem0e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_it0du")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_dbyq2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_rmqa7"]
+font = ExtResource("2_nuppg")
+
+[sub_resource type="LabelSettings" id="LabelSettings_7wyo5"]
+line_spacing = 5.0
+font = ExtResource("2_nuppg")
+font_size = 14
+
+[node name="Entarance" type="Control" unique_id=1030957121]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_55iln")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1043326811]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Background" unique_id=2022301805]
+layout_mode = 0
+offset_right = 800.0
+offset_bottom = 450.0
+color = Color(0, 0, 0, 1)
+
+[node name="CardHand" type="Control" parent="." unique_id=549643464]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 281.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_ds2wf")
+
+[node name="Ramka" type="Sprite2D" parent="." unique_id=1868686636]
+texture_filter = 1
+position = Vector2(142, 109)
+texture = ExtResource("5_5abnr")
+
+[node name="NPC_Animation" type="AnimatedSprite2D" parent="." unique_id=445019476]
+position = Vector2(146, 109)
+sprite_frames = SubResource("SpriteFrames_kyplu")
+autoplay = "default"
+
+[node name="RamkaSmallName" type="Sprite2D" parent="." unique_id=498343303]
+position = Vector2(145, 197)
+texture = ExtResource("74_q4obr")
+
+[node name="TEXTBOX_Name_NPC" type="Label" parent="." unique_id=632592109]
+texture_filter = 1
+layout_mode = 0
+offset_left = 81.0
+offset_top = 192.0
+offset_right = 210.0
+offset_bottom = 207.0
+theme_override_colors/font_color = Color(0.89276254, 0.62226886, 0.7996335, 1)
+theme_override_fonts/font = ExtResource("75_1aum0")
+theme_override_font_sizes/font_size = 14
+text = "Katrine"
+label_settings = SubResource("LabelSettings_rmqa7")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TEXTBOX_Talk_NPC" type="Label" parent="." unique_id=162189294]
+visible = false
+layout_mode = 0
+offset_left = 40.0
+offset_top = 189.0
+offset_right = 221.0
+offset_bottom = 356.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_nuppg")
+theme_override_font_sizes/font_size = 16
+text = "What determines the fate 
+of humanity in this world? 
+Is it some unseen entity 
+or law - something like 
+the Hand of God hovering 
+above the world? 
+
+At the very least, it is true 
+that man has no control 
+even over his own will."
+
+[node name="TEXTBOX_Talk_NPC2" type="Label" parent="." unique_id=464807763]
+layout_mode = 0
+offset_left = 68.0
+offset_top = 225.0
+offset_right = 227.0
+offset_bottom = 378.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_nuppg")
+theme_override_font_sizes/font_size = 16
+text = "What determines the fate 
+of humanity in this world? 
+Is it some unseen entity or 
+law - something like the 
+Hand of God hovering above 
+the world? 
+At the very least, it is true 
+that man has no control 
+even over his own will."
+label_settings = SubResource("LabelSettings_7wyo5")
+horizontal_alignment = 1
+
+[node name="Frame" type="Sprite2D" parent="." unique_id=21367973]
+position = Vector2(400, 225)
+texture = ExtResource("76_ds2wf")
+
+[node name="GameContent" type="Control" parent="." unique_id=969127843]
+anchors_preset = 0
+offset_right = 400.0
+offset_bottom = 451.0
+
+[node name="ContinueButton" type="Button" parent="GameContent" unique_id=1233607629]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 378.0
+offset_right = 246.0
+offset_bottom = 409.0
+theme_override_fonts/font = ExtResource("2_rsyof")
+text = "Next"
+
+[node name="GoToForgeButton" type="Button" parent="GameContent" unique_id=1723096625]
+layout_mode = 0
+offset_left = 696.0
+offset_top = 19.0
+offset_right = 775.0
+offset_bottom = 59.0
+theme_override_fonts/font = ExtResource("2_nuppg")
+text = "Go to Forge"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1134418455]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1365241668]
+material = ExtResource("77_ds2wf")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="GameContent/GoToForgeButton" to="." method="_on_go_to_forge_button_pressed"]

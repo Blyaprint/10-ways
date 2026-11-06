@@ -1,0 +1,626 @@
+[gd_scene format=3 uid="uid://48mgk5xlkpho"]
+
+[ext_resource type="Script" uid="uid://d368duoyhgvrn" path="res://scripts/main.gd" id="1_0bbpv"]
+[ext_resource type="Script" uid="uid://c8xqp34lwo11l" path="res://scripts/cards/card_hand.gd" id="1_elqb8"]
+[ext_resource type="FontFile" uid="uid://cltklp5sdbqxg" path="res://resources/Comic Sans MS Pixel.ttf" id="3_rarhs"]
+[ext_resource type="Texture2D" uid="uid://bi534g3s7m5cj" path="res://resources/Pixelnaya_kuznitsa_v_lunnykh_sumerkakh.png" id="4_rarhs"]
+[ext_resource type="Texture2D" uid="uid://dgpk0you5expo" path="res://circle.png" id="5_nfivy"]
+[ext_resource type="PackedScene" uid="uid://bvq8x7y3m4n5p" path="res://addons/vfx_library/effects/torch_fire.tscn" id="5_vcsgt"]
+[ext_resource type="Texture2D" uid="uid://bvof7bdatsedd" path="res://card_slot.png" id="6_1nqs0"]
+[ext_resource type="PackedScene" uid="uid://c5igufnuaimwc" path="res://addons/vfx_library/effects/campfire_smoke.tscn" id="6_c01mt"]
+[ext_resource type="PackedScene" uid="uid://c5m8oap0q1r2s" path="res://addons/vfx_library/effects/fireflies.tscn" id="7_nxtc6"]
+[ext_resource type="Texture2D" uid="uid://dckq6d1su7u6u" path="res://oneblock2.png" id="8_q8u5g"]
+[ext_resource type="Texture2D" uid="uid://0npbnbbhmko8" path="res://oneblock3.png" id="11_fun0h"]
+[ext_resource type="Script" uid="uid://0h35y36e5m6g" path="res://scripts/cards/card_slot.gd" id="11_oqdxe"]
+[ext_resource type="Texture2D" uid="uid://cof52o7ak6xd" path="res://resources/campfire_sprites/campfire1.png" id="13_bb450"]
+[ext_resource type="PackedScene" uid="uid://3rst35c8rspo" path="res://scenes/OrderPanel.tscn" id="14_1iba3"]
+[ext_resource type="Texture2D" uid="uid://chydy6wmycu6b" path="res://resources/campfire_sprites/campfire2.png" id="14_nfivy"]
+[ext_resource type="Texture2D" uid="uid://dwp8sswusb0od" path="res://resources/campfire_sprites/campfire3.png" id="15_1nqs0"]
+[ext_resource type="Texture2D" uid="uid://62ph0t5610ul" path="res://resources/campfire_sprites/campfire4.png" id="16_1iba3"]
+[ext_resource type="Texture2D" uid="uid://dpgsqw0fwgnch" path="res://resources/campfire_sprites/campfire5.png" id="17_yxlcp"]
+[ext_resource type="Material" uid="uid://dw3ciuav1yrex" path="res://shader_retro.tres" id="18_bb450"]
+[ext_resource type="Texture2D" uid="uid://dfgvr7wd82j42" path="res://resources/campfire_sprites/campfire6.png" id="18_ebg2g"]
+[ext_resource type="Texture2D" uid="uid://c2yrc17rawdbh" path="res://FRAME.png" id="90_4pegn"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2ofn6"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_bb450")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_nfivy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_1nqs0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_1iba3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_yxlcp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_ebg2g")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_nxtc6"]
+
+[sub_resource type="Gradient" id="Gradient_jlsqs"]
+offsets = PackedFloat32Array(0.05785124, 0.10950413, 0.19214876, 0.71428573, 0.9359504)
+colors = PackedColorArray(1, 1, 1, 1, 0.869982, 0.7395095, 0.00016090597, 1, 0.97070014, 0.17688793, 3.6260506e-05, 1, 0.552288, 0.18198955, 9.62615e-08, 1, 0.32399637, 0.24070574, 0.23982917, 1)
+
+[node name="Main" type="Control" unique_id=388697443]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0bbpv")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1579473407]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -21.0
+offset_top = -19.0
+offset_right = 24.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Back" type="Sprite2D" parent="." unique_id=986486181]
+visible = false
+position = Vector2(326, 160)
+scale = Vector2(0.37453243, 0.46655297)
+texture = ExtResource("4_rarhs")
+
+[node name="GameContent" type="Control" parent="." unique_id=1198566719]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DialogueBox" type="PanelContainer" parent="GameContent" unique_id=39414914]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -496.0
+offset_top = 5.0
+offset_right = 480.0
+offset_bottom = 61.0
+grow_horizontal = 2
+
+[node name="SceneText" type="Label" parent="GameContent/DialogueBox" unique_id=1792659831]
+visible = false
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+theme_override_colors/font_color = Color(0.8002707, 0.4930148, 0.33961076, 1)
+theme_override_fonts/font = ExtResource("3_rarhs")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="SceneText" type="Label" parent="GameContent" unique_id=1126647191]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="CardHand" type="Control" parent="GameContent" unique_id=942175865 node_paths=PackedStringArray("order_panel", "wheel_node", "wheel_slots")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_elqb8")
+order_panel = NodePath("../OrderPanel")
+wheel_node = NodePath("Wheel")
+wheel_slots = [NodePath("Wheel/Slot0"), NodePath("Wheel/Slot1"), NodePath("Wheel/Slot2"), NodePath("Wheel/Slot3"), NodePath("Wheel/Slot4"), NodePath("Wheel/Slot5"), NodePath("Wheel/Slot6"), NodePath("Wheel/Slot7"), NodePath("Wheel/Slot8"), NodePath("Wheel/Slot9"), NodePath("Wheel/Slot10"), NodePath("Wheel/Slot11")]
+
+[node name="Wheel" type="Node2D" parent="GameContent/CardHand" unique_id=437571032]
+position = Vector2(377, 184)
+scale = Vector2(0.8, 0.8)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel" unique_id=626785623]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_nfivy")
+
+[node name="Slot0" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=536086925]
+position = Vector2(0, -150)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot0" unique_id=101577060]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="Slot1" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=1408232936]
+position = Vector2(75, -130)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot1" unique_id=1539874528]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="Slot2" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=492040887]
+position = Vector2(130, -75)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot2" unique_id=660639367]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="Slot3" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=2135256738]
+position = Vector2(150, 0)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot3" unique_id=735050306]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="Slot4" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=1648374535]
+position = Vector2(130, 75)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot4" unique_id=469104812]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="Slot5" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=1423178479]
+position = Vector2(75, 130)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot5" unique_id=2048132140]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="Slot6" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=300114983]
+position = Vector2(0, 150)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot6" unique_id=14014314]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="Slot7" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=345938209]
+position = Vector2(-75, 130)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot7" unique_id=32095876]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="Slot8" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=1616598222]
+position = Vector2(-130, 75)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot8" unique_id=1741488889]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="Slot9" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=177200161]
+position = Vector2(-150, 0)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot9" unique_id=1809327527]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="Slot10" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=855039757]
+position = Vector2(-130, -75)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot10" unique_id=1460973599]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="Slot11" type="Marker2D" parent="GameContent/CardHand/Wheel" unique_id=134401933]
+position = Vector2(-75, -130)
+
+[node name="TextureRect" type="TextureRect" parent="GameContent/CardHand/Wheel/Slot11" unique_id=133590583]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -50.0
+offset_right = 35.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(35, 50)
+texture = ExtResource("6_1nqs0")
+
+[node name="ContinueButton" type="Button" parent="GameContent" unique_id=28205883]
+visible = false
+layout_mode = 0
+offset_left = 1448.0
+offset_top = 8.0
+offset_right = 1489.0
+offset_bottom = 64.0
+focus_mode = 0
+text = "🔻"
+
+[node name="GoToEntranceButton" type="Button" parent="GameContent" unique_id=558060022]
+layout_mode = 0
+offset_left = 674.0
+offset_top = 227.0
+offset_right = 766.0
+offset_bottom = 258.0
+text = "Go to Door"
+
+[node name="Frame" type="Sprite2D" parent="GameContent" unique_id=284001589]
+z_index = 4096
+position = Vector2(400, 225)
+texture = ExtResource("90_4pegn")
+
+[node name="Campfire" type="AnimatedSprite2D" parent="GameContent" unique_id=1930562217]
+position = Vector2(703, 95)
+sprite_frames = SubResource("SpriteFrames_2ofn6")
+autoplay = "default"
+frame = 1
+frame_progress = 0.6446213
+
+[node name="OrderPanel" parent="GameContent" unique_id=705013013 instance=ExtResource("14_1iba3")]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 300.0
+
+[node name="CampfireSmoke" parent="." unique_id=1331548123 instance=ExtResource("6_c01mt")]
+visible = false
+position = Vector2(588, 266)
+scale = Vector2(2, 5)
+spread = 0.0
+initial_velocity_min = 5.0
+initial_velocity_max = 15.0
+scale_amount_min = 5.0
+scale_amount_max = 15.0
+color = Color(0.5370113, 0.5370113, 0.5370112, 1)
+
+[node name="Fireflies" parent="." unique_id=620110070 instance=ExtResource("7_nxtc6")]
+visible = false
+position = Vector2(664, 360)
+scale = Vector2(15, 15)
+amount = 15
+initial_velocity_min = 0.5
+initial_velocity_max = 1.0
+angle_min = -120.0
+angle_max = -120.0
+scale_amount_min = 0.1
+scale_amount_max = 0.5
+color_ramp = SubResource("Gradient_nxtc6")
+
+[node name="TorchFire" parent="." unique_id=1904845430 instance=ExtResource("5_vcsgt")]
+visible = false
+position = Vector2(583, 300)
+scale = Vector2(20, 10)
+amount = 10
+lifetime = 1.0
+fixed_fps = 60
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+gravity = Vector2(0, -150)
+initial_velocity_min = 0.0
+initial_velocity_max = 0.0
+angular_velocity_min = 0.0
+angular_velocity_max = 0.0
+scale_amount_min = 1.0
+color_ramp = SubResource("Gradient_jlsqs")
+
+[node name="SlotsContainer" type="Control" parent="." unique_id=469018233]
+visible = false
+layout_mode = 1
+anchor_left = 0.040000003
+anchor_top = 0.051000003
+anchor_right = 0.040000003
+anchor_bottom = 0.051000003
+offset_left = 207.0
+offset_top = 81.05
+offset_right = 535.0
+offset_bottom = 292.05
+
+[node name="Slot_1" type="Control" parent="SlotsContainer" unique_id=1802164841 node_paths=PackedStringArray("slot_texture")]
+anchors_preset = 0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 92.0
+offset_bottom = 92.0
+script = ExtResource("11_oqdxe")
+slot_texture = NodePath("Picture")
+normal_texture = ExtResource("8_q8u5g")
+hover_texture = ExtResource("11_fun0h")
+
+[node name="Picture" type="TextureRect" parent="SlotsContainer/Slot_1" unique_id=1074843369]
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 68.0
+mouse_filter = 2
+texture = ExtResource("8_q8u5g")
+
+[node name="Slot_2" type="Control" parent="SlotsContainer" unique_id=2123355992 node_paths=PackedStringArray("slot_texture")]
+anchors_preset = 0
+offset_left = 96.0
+offset_top = 24.0
+offset_right = 164.0
+offset_bottom = 92.0
+script = ExtResource("11_oqdxe")
+slot_texture = NodePath("Picture")
+normal_texture = ExtResource("8_q8u5g")
+hover_texture = ExtResource("11_fun0h")
+
+[node name="Picture" type="TextureRect" parent="SlotsContainer/Slot_2" unique_id=180407484]
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 68.0
+mouse_filter = 2
+texture = ExtResource("8_q8u5g")
+
+[node name="Slot_3" type="Control" parent="SlotsContainer" unique_id=1431693497 node_paths=PackedStringArray("slot_texture")]
+anchors_preset = 0
+offset_left = 168.0
+offset_top = 24.0
+offset_right = 236.0
+offset_bottom = 92.0
+script = ExtResource("11_oqdxe")
+slot_texture = NodePath("Picture")
+normal_texture = ExtResource("8_q8u5g")
+hover_texture = ExtResource("11_fun0h")
+
+[node name="Picture" type="TextureRect" parent="SlotsContainer/Slot_3" unique_id=1346093037]
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 68.0
+mouse_filter = 2
+texture = ExtResource("8_q8u5g")
+
+[node name="Slot_4" type="Control" parent="SlotsContainer" unique_id=150337132 node_paths=PackedStringArray("slot_texture")]
+anchors_preset = 0
+offset_left = 240.0
+offset_top = 24.0
+offset_right = 308.0
+offset_bottom = 92.0
+script = ExtResource("11_oqdxe")
+slot_texture = NodePath("Picture")
+normal_texture = ExtResource("8_q8u5g")
+hover_texture = ExtResource("11_fun0h")
+
+[node name="Picture" type="TextureRect" parent="SlotsContainer/Slot_4" unique_id=1551652084]
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 68.0
+mouse_filter = 2
+texture = ExtResource("8_q8u5g")
+
+[node name="Slot_5" type="Control" parent="SlotsContainer" unique_id=480630677 node_paths=PackedStringArray("slot_texture")]
+anchors_preset = 0
+offset_left = 24.0
+offset_top = 136.0
+offset_right = 92.0
+offset_bottom = 204.0
+script = ExtResource("11_oqdxe")
+slot_texture = NodePath("Picture")
+normal_texture = ExtResource("8_q8u5g")
+hover_texture = ExtResource("11_fun0h")
+
+[node name="Picture" type="TextureRect" parent="SlotsContainer/Slot_5" unique_id=161224498]
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 68.0
+mouse_filter = 2
+texture = ExtResource("8_q8u5g")
+
+[node name="Slot_6" type="Control" parent="SlotsContainer" unique_id=790721327 node_paths=PackedStringArray("slot_texture")]
+anchors_preset = 0
+offset_left = 96.0
+offset_top = 136.0
+offset_right = 164.0
+offset_bottom = 204.0
+script = ExtResource("11_oqdxe")
+slot_texture = NodePath("Picture")
+normal_texture = ExtResource("8_q8u5g")
+hover_texture = ExtResource("11_fun0h")
+
+[node name="Picture" type="TextureRect" parent="SlotsContainer/Slot_6" unique_id=512436207]
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 68.0
+mouse_filter = 2
+texture = ExtResource("8_q8u5g")
+
+[node name="Slot_7" type="Control" parent="SlotsContainer" unique_id=659508944 node_paths=PackedStringArray("slot_texture")]
+anchors_preset = 0
+offset_left = 168.0
+offset_top = 136.0
+offset_right = 236.0
+offset_bottom = 204.0
+script = ExtResource("11_oqdxe")
+slot_texture = NodePath("Picture")
+normal_texture = ExtResource("8_q8u5g")
+hover_texture = ExtResource("11_fun0h")
+
+[node name="Picture" type="TextureRect" parent="SlotsContainer/Slot_7" unique_id=371700745]
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 68.0
+mouse_filter = 2
+texture = ExtResource("8_q8u5g")
+
+[node name="Slot_8" type="Control" parent="SlotsContainer" unique_id=313870553 node_paths=PackedStringArray("slot_texture")]
+anchors_preset = 0
+offset_left = 240.0
+offset_top = 136.0
+offset_right = 308.0
+offset_bottom = 204.0
+script = ExtResource("11_oqdxe")
+slot_texture = NodePath("Picture")
+normal_texture = ExtResource("8_q8u5g")
+hover_texture = ExtResource("11_fun0h")
+
+[node name="Picture" type="TextureRect" parent="SlotsContainer/Slot_8" unique_id=608169102]
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 68.0
+mouse_filter = 2
+texture = ExtResource("8_q8u5g")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=158993695]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1113884715]
+material = ExtResource("18_bb450")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="GameContent/GoToEntranceButton" to="." method="_on_go_to_entrance_button_pressed"]

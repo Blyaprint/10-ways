@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://bvmxbvsxsrp5b"]
+
+[ext_resource type="Script" uid="uid://rj3ldqxi1rae" path="res://scripts/_menu.gd" id="1_0ykhv"]
+[ext_resource type="FontFile" uid="uid://djeohuk251sig" path="res://resources/medieval-pixel.ttf" id="1_yqorp"]
+[ext_resource type="Texture2D" uid="uid://b8ebbot1q0qb1" path="res://resources/card.png" id="2_ow34m"]
+[ext_resource type="Material" uid="uid://dw3ciuav1yrex" path="res://shader_retro.tres" id="4_ow34m"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0ykhv"]
+font = ExtResource("1_yqorp")
+font_size = 45
+outline_size = 4
+outline_color = Color(0.22446838, 0.10251915, 0.04235103, 1)
+
+[node name="MainMenu" type="Control" unique_id=505343654]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0ykhv")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1139245907]
+layout_mode = 0
+offset_right = 800.0
+offset_bottom = 450.0
+texture = ExtResource("2_ow34m")
+
+[node name="MenuContent" type="VBoxContainer" parent="." unique_id=860169883]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -134.5
+offset_top = -108.0
+offset_right = 134.5
+offset_bottom = 108.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameTitle" type="Label" parent="MenuContent" unique_id=1884307022]
+layout_mode = 2
+text = "Path Of Legacy"
+label_settings = SubResource("LabelSettings_0ykhv")
+horizontal_alignment = 1
+
+[node name="NewGameButton" type="Button" parent="MenuContent" unique_id=1563518999]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_yqorp")
+theme_override_font_sizes/font_size = 24
+text = "New game"
+
+[node name="ContinueButton" type="Button" parent="MenuContent" unique_id=1403432499]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_yqorp")
+theme_override_font_sizes/font_size = 24
+text = "Continue"
+
+[node name="SettingsButon" type="Button" parent="MenuContent" unique_id=1279946243]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_yqorp")
+theme_override_font_sizes/font_size = 24
+text = "Setting"
+
+[node name="ExitButton" type="Button" parent="MenuContent" unique_id=1342605661]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_yqorp")
+theme_override_font_sizes/font_size = 24
+text = "Exit"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1499726814]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=8019419]
+material = ExtResource("4_ow34m")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="MenuContent/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="MenuContent/ExitButton" to="." method="_on_exit_button_pressed"]

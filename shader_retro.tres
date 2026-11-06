@@ -1,0 +1,25 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dw3ciuav1yrex"]
+
+[ext_resource type="Shader" uid="uid://dg5q1f5swhh6e" path="res://scenes/FishEye.gdshader" id="1_nbvnk"]
+
+[resource]
+shader = ExtResource("1_nbvnk")
+shader_parameter/enable_distortion = true
+shader_parameter/enable_scanlines = true
+shader_parameter/enable_jitter = false
+shader_parameter/enable_flicker = true
+shader_parameter/enable_noise = false
+shader_parameter/enable_vignette_pulse = false
+shader_parameter/distortion = 0.10000000475
+shader_parameter/scanline_strength = 0.400000019
+shader_parameter/scanline_count = 360.000014725
+shader_parameter/scanline_thickness = 1.00000004424012
+shader_parameter/jitter_amount = 1.0170000483075
+shader_parameter/jitter_speed = 0.982000046645
+shader_parameter/flicker_amount = 0.0150000007125
+shader_parameter/flicker_speed = 8.00000038
+shader_parameter/noise_amount = 0.02700000128249999
+shader_parameter/vignette_strength = 0.400000019
+shader_parameter/vignette_speed = 1.50000007125
+shader_parameter/color_dark = Color(0.0042873747, 0.02058486, 0.042309828, 1)
+shader_parameter/color_light = Color(0.8908065, 0.54466105, 0.5208153, 1)

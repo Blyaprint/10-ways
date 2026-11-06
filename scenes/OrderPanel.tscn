@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://3rst35c8rspo"]
+
+[ext_resource type="Script" uid="uid://brklfqkb8ojal" path="res://scripts/OrderPanel.gd" id="1_ifeye"]
+
+[node name="OrderPanel" type="Control" unique_id=705013013]
+custom_minimum_size = Vector2(150, 300)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ifeye")
+
+[node name="Panel" type="Panel" parent="." unique_id=2143361866]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Vbox" type="VBoxContainer" parent="." unique_id=681158753]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ClientLabel" type="Label" parent="Vbox" unique_id=1664088633]
+layout_mode = 2
+
+[node name="DescLabel" type="Label" parent="Vbox" unique_id=1286850021]
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="Vbox" unique_id=1468073803]
+layout_mode = 2
+
+[node name="QualityBar" type="ProgressBar" parent="Vbox" unique_id=1128220793]
+layout_mode = 2
+
+[node name="DeadlineLabel" type="Label" parent="Vbox" unique_id=349023346]
+layout_mode = 2
+
+[node name="SubmitButton" type="Button" parent="Vbox" unique_id=1737277408]
+layout_mode = 2
+text = "Завершить"
