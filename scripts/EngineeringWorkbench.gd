@@ -22,7 +22,7 @@ class DragCard extends PanelContainer:
 		return payload
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		return host != null and host.call("can_drop_to_card", payload, data)
+		return host != null and host.call("can_drop_to_card", payload, data))
 
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		if host != null:
@@ -34,7 +34,7 @@ class DropZone extends PanelContainer:
 	var zone_kind := ""
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		var allowed := host != null and host.call("can_drop_to_zone", zone_kind, data)
+		var allowed: bool = host != null and bool(host.call("can_drop_to_zone", zone_kind, data))
 		self_modulate = Color("#b8e8c0") if allowed else Color("#e8b8b8")
 		tooltip_text = "Можно положить карту" if allowed else "Сюда нельзя переместить эту карту"
 		return allowed
@@ -42,7 +42,7 @@ class DropZone extends PanelContainer:
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		self_modulate = Color.WHITE
 		if host != null:
-			host.call("drop_to_zone", zone_kind, data)
+			host.call("drop_to_zone", zone_kind, data))
 
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_DRAG_END:
@@ -53,7 +53,7 @@ class GraphCanvas extends GraphEdit:
 	var host: Control
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		var allowed := host != null and host.call("can_drop_to_graph", data)
+		var allowed: bool = host != null and bool(host.call("can_drop_to_graph", data))
 		self_modulate = Color("#b8e8c0") if allowed else Color("#e8b8b8")
 		tooltip_text = "Добавить карту в схему" if allowed else "Эту карту нельзя добавить в схему"
 		return allowed
