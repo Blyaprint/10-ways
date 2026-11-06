@@ -291,7 +291,7 @@ func _build_inventory_window() -> void:
 	drag_bar.add_child(title)
 	var inventory_close := Button.new()
 	inventory_close.text = "×"
-	inventory_close.position = Vector2(338, 1)
+	inventory_close.position = Vector2(478, 1)
 	inventory_close.size = Vector2(28, 26)
 	inventory_close.z_index = 2
 	inventory_close.tooltip_text = "Закрыть инвентарь"
@@ -535,7 +535,7 @@ func _make_visual_card(payload: Dictionary, title: String, subtitle: String, sym
 	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(header)
 	var kind := str(payload.get("kind", "resource"))
-	var category := "ОПЕРАЦИЯ" if kind == "action" else "МАТЕРИАЛ"
+	var category := "ОПЕРАЦИЯ" if kind == "action" else ("ТОПЛИВО" if str(payload.get("id", "")) == "coal" else "МАТЕРИАЛ")
 	var type_label := _label(category, 7, Color("#f4f0df"))
 	type_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	type_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -582,8 +582,9 @@ func _make_visual_card(payload: Dictionary, title: String, subtitle: String, sym
 	var footer := HBoxContainer.new()
 	footer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(footer)
-	var stat_name := "МНОГОРАЗОВАЯ" if kind == "action" else "КАЧЕСТВО"
-	var stat_value := "АКТИВНАЯ" if kind == "action" else "%d/100" % int(payload.get("quality", 0))
+	var is_coal := str(payload.get("id", "")) == "coal"
+	var stat_name := "МНОГОРАЗОВАЯ" if kind == "action" else ("ГОРЕНИЕ" if is_coal else "КАЧЕСТВО")
+	var stat_value := "АКТИВНАЯ" if kind == "action" else ("ТОПЛИВО" if is_coal else "%d/100" % int(payload.get("quality", 0)))
 	var stat_label := _label(stat_name, 7, Color("#f4f0df"))
 	stat_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	stat_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
