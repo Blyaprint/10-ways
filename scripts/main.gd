@@ -21,7 +21,7 @@ func _ready() -> void:
 
 	var game_content := get_node_or_null("GameContent")
 	if game_content:
-		crafting_workbench = CRAFTING_WORKBENCH_SCENE.instantiate()
+		crafting_workbench = CRAFTING_WORKBENCH_SCENE.instantiate() as Control
 		crafting_workbench.name = "CraftingWorkbench"
 		crafting_workbench.z_index = 4097
 		game_content.add_child(crafting_workbench)
@@ -50,5 +50,5 @@ func _on_craft_completed(item_id: String, quality: int) -> void:
 	else:
 		current_order = null
 		if crafting_workbench:
-			crafting_workbench.set_order(null)
+			crafting_workbench.call("set_order", null)
 		print("Все заказы выполнены!")
