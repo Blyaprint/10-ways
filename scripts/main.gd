@@ -7,6 +7,11 @@ var current_order: Order = null
 
 
 func _ready() -> void:
+	if order_panel:
+		var submit_button := order_panel.get_node_or_null("Vbox/SubmitButton")
+		if submit_button and not submit_button.pressed.is_connected(_on_submit_button_pressed):
+			submit_button.pressed.connect(_on_submit_button_pressed)
+
 	if OrderManager.active_orders.size() > 0:
 		start_order(OrderManager.active_orders[0])
 	else:
