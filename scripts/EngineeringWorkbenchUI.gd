@@ -23,11 +23,18 @@ class CardDropRow extends HBoxContainer:
 	var host: Control
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		return host != null and host.call("can_drop_to_zone", "hand", data)
+		var allowed := host != null and host.call("can_drop_to_zone", "hand", data)
+		self_modulate = Color("#b8e8c0") if allowed else Color("#e8b8b8")
+		return allowed
 
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
+		self_modulate = Color.WHITE
 		if host != null:
 			host.call("drop_to_zone", "hand", data)
+
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_DRAG_END:
+			self_modulate = Color.WHITE
 
 class FullDragCard extends PanelContainer:
 	var host: Control
@@ -43,11 +50,18 @@ class FullDragCard extends PanelContainer:
 		return payload
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		return host != null and host.call("can_drop_to_card", payload, data)
+		var allowed := host != null and host.call("can_drop_to_card", payload, data)
+		self_modulate = Color("#b8e8c0") if allowed else Color("#e8b8b8")
+		return allowed
 
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
+		self_modulate = Color.WHITE
 		if host != null:
 			host.call("drop_to_card", payload, data)
+
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_DRAG_END:
+			self_modulate = Color.WHITE
 
 
 
@@ -57,11 +71,18 @@ class InventoryDropWindow extends PanelContainer:
 	var host: Control
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		return host != null and host.call("can_drop_to_zone", "inventory", data)
+		var allowed := host != null and host.call("can_drop_to_zone", "inventory", data)
+		self_modulate = Color("#b8e8c0") if allowed else Color("#e8b8b8")
+		return allowed
 
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
+		self_modulate = Color.WHITE
 		if host != null:
 			host.call("drop_to_zone", "inventory", data)
+
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_DRAG_END:
+			self_modulate = Color.WHITE
 
 class CardArtwork extends Control:
 	var item_id := ""
@@ -93,7 +114,7 @@ class CardArtwork extends Control:
 							rows = ["##.....", ".##....", "..##...", "...##..", "....##.", ".....##"]
 		if rows.is_empty():
 			rows = ["...#...", "..###..", ".#####.", "..###..", "...#..."]
-		var pixel := 5.0
+		var pixel := 8.0
 		var width := 7.0 * pixel
 		var height := float(rows.size()) * pixel
 		var origin := Vector2((size.x - width) * 0.5, (size.y - height) * 0.5)
@@ -251,6 +272,7 @@ func _build_inventory_window() -> void:
 	inventory_window.z_index = 10
 	inventory_window.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 2))
 	add_child(inventory_window)
+	inventory_window.hide()
 
 	var body := VBoxContainer.new()
 	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
