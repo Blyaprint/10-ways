@@ -58,6 +58,10 @@ class HandFan extends Control:
 			hovered_uid = -1
 		layout_cards(true)
 
+	func on_drag_started() -> void:
+		hovered_uid = -1
+		layout_cards(true)
+
 	func layout_cards(animated: bool = true) -> void:
 		var visible_cards: Array[Control] = []
 		for child in get_children():
@@ -760,16 +764,15 @@ func _refresh_hand() -> void:
 
 func _set_hand_card_hover(uid: int, hovered: bool) -> void:
 	if hand_list != null:
-		hand_list.set_hovered_card(uid, hovered)
+		hand_list.call("set_hovered_card", uid, hovered)
 
 func _on_hand_card_drag_started(_uid: int) -> void:
 	if hand_list != null:
-		hand_list.hovered_uid = -1
-		hand_list.layout_cards(true)
+		hand_list.call("on_drag_started")
 
 func _on_hand_card_drag_ended(_uid: int) -> void:
 	if hand_list != null:
-		hand_list.layout_cards(true)
+		hand_list.call("layout_cards", true)
 
 func _refresh_all() -> void:
 	_refresh_inventory()
