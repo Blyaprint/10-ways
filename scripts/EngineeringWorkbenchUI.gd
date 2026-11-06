@@ -533,7 +533,7 @@ func _on_delivery_pressed() -> void:
 		total_operations = last_action_count
 		for recipe_id in last_recipe_chain:
 			complete_chain.append(recipe_id)
-	var record :=
+	var record := {
 		"date_time": Time.get_datetime_string_from_system(),
 		"client_name": current_order.client_name,
 		"item_id": item_id,
