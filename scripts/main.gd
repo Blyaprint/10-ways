@@ -26,19 +26,19 @@ func _ready() -> void:
 		crafting_workbench.z_index = 4097
 		game_content.add_child(crafting_workbench)
 		crafting_workbench.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		crafting_workbench.craft_completed.connect(_on_craft_completed)
+		crafting_workbench.connect("craft_completed", Callable(self, "_on_craft_completed"))
 
 	if OrderManager.active_orders.size() > 0:
 		start_order(OrderManager.active_orders[0])
 	elif crafting_workbench:
-		crafting_workbench.set_order(null)
+		crafting_workbench.call("set_order", null)
 
 
 func start_order(order: Order) -> void:
 	current_order = order
 	print("Взят заказ: ", order.description)
 	if crafting_workbench:
-		crafting_workbench.set_order(order)
+		crafting_workbench.call("set_order", order)
 
 
 func _on_craft_completed(item_id: String, quality: int) -> void:
