@@ -614,24 +614,8 @@ func _style(fill: Color, border: Color, border_width: int) -> StyleBoxFlat:
 	return box
 
 func _make_drag_preview(title: String, subtitle: String, symbol: String, preview_size: Vector2, payload: Dictionary) -> Control:
-	# Use a fixed-size clipping viewport so child minimum sizes cannot stretch the drag ghost.
-	var preview := Control.new()
-	preview.custom_minimum_size = preview_size
-	preview.size = preview_size
-	preview.clip_contents = true
-	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	preview.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	preview.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-
-	var card := _make_visual_card(payload, title, subtitle, symbol, Color("#f4f0df"), preview_size)
-	card.position = Vector2.ZERO
-	card.custom_minimum_size = preview_size
-	card.size = preview_size
-	card.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	card.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	card.clip_contents = true
-	preview.add_child(card)
-	return preview
+	# The drag ghost is the same card scene/layout as the hand card, at the same dimensions.
+	return _make_visual_card(payload, title, subtitle, symbol, Color("#f4f0df"), preview_size)
 
 
 func _make_visual_card(payload: Dictionary, title: String, subtitle: String, symbol: String, tint: Color, card_size: Vector2) -> FullDragCard:
@@ -655,14 +639,14 @@ func _make_visual_card(payload: Dictionary, title: String, subtitle: String, sym
 	card.add_theme_stylebox_override("panel", frame)
 
 	var outer := MarginContainer.new()
-	for pair in [["margin_left", 5], ["margin_right", 5], ["margin_top", 5], ["margin_bottom", 5]]:
+	for pair in [["margin_left", 3], ["margin_right", 3], ["margin_top", 3], ["margin_bottom", 3]]:
 		outer.add_theme_constant_override(pair[0], pair[1])
 	outer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(outer)
 
 	var body := VBoxContainer.new()
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	body.add_theme_constant_override("separation", 3)
+	body.add_theme_constant_override("separation", 1)
 	outer.add_child(body)
 
 	var header := HBoxContainer.new()
@@ -682,7 +666,7 @@ func _make_visual_card(payload: Dictionary, title: String, subtitle: String, sym
 		header.add_child(count_label)
 
 	var art_frame := PanelContainer.new()
-	art_frame.custom_minimum_size.y = 62
+	art_frame.custom_minimum_size.y = 42
 	var art_style := StyleBoxFlat.new()
 	art_style.bg_color = Color("#080808")
 	art_style.border_color = Color("#f4f0df")
@@ -701,7 +685,7 @@ func _make_visual_card(payload: Dictionary, title: String, subtitle: String, sym
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	name_label.custom_minimum_size.y = 25
+	name_label.custom_minimum_size.y = 20
 	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(name_label)
 
@@ -709,7 +693,7 @@ func _make_visual_card(payload: Dictionary, title: String, subtitle: String, sym
 	detail_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	detail_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	detail_label.custom_minimum_size.y = 22
+	detail_label.custom_minimum_size.y = 16
 	detail_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(detail_label)
 
