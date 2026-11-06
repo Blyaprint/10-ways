@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/EngineeringWorkbench.gd" id="1_engineering"]
+[ext_resource type="Script" path="res://scripts/EngineeringWorkbenchUI.gd" id="1_engineering"]
 
 [node name="EngineeringWorkbench" type="Control"]
 layout_mode = 3
