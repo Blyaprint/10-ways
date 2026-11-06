@@ -63,6 +63,9 @@ var current_order: Order = null
 var blueprint_used := false
 var card_serial := 0
 var node_serial := 0
+var last_coal_used := 0
+var last_action_count := 0
+var last_recipe_chain: Array[String] = []
 
 var inventory_zone: DropZone
 var hand_zone: DropZone
@@ -612,6 +615,9 @@ func _on_run_graph_pressed() -> void:
 		_update_status("Для этой схемы нужно угля: %d. В инвентаре: %d." % [total_coal, int(inventory.get("coal", 0))])
 		return
 
+	last_coal_used = total_coal
+	last_action_count = action_ids.size()
+	last_recipe_chain = found_recipes.duplicate()
 	var was_new := false
 	for recipe_id in found_recipes:
 		if not discovered_recipes.has(recipe_id):
