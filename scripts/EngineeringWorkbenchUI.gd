@@ -30,7 +30,7 @@ class CardDropRow extends HBoxContainer:
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		self_modulate = Color.WHITE
 		if host != null:
-			host.call("drop_to_zone", "hand", data))
+			host.call("drop_to_zone", "hand", data)
 
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_DRAG_END:
@@ -78,7 +78,7 @@ class InventoryDropWindow extends PanelContainer:
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		self_modulate = Color.WHITE
 		if host != null:
-			host.call("drop_to_zone", "inventory", data))
+			host.call("drop_to_zone", "inventory", data)
 
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_DRAG_END:
