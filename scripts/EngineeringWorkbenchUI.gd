@@ -51,6 +51,18 @@ class FullDragCard extends PanelContainer:
 
 
 
+
+
+class InventoryDropWindow extends PanelContainer:
+	var host: Control
+
+	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+		return host != null and host.call("can_drop_to_zone", "inventory", data)
+
+	func _drop_data(_at_position: Vector2, data: Variant) -> void:
+		if host != null:
+			host.call("drop_to_zone", "inventory", data)
+
 class CardArtwork extends Control:
 	var item_id := ""
 	var item_kind := ""
@@ -110,7 +122,7 @@ func _build_interface() -> void:
 
 	var backdrop := PanelContainer.new()
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	backdrop.add_theme_stylebox_override("panel", _style(Color("#17130f"), Color("#a77b45"), 2))
+	backdrop.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 2))
 	add_child(backdrop)
 
 	var margins := MarginContainer.new()
@@ -124,7 +136,7 @@ func _build_interface() -> void:
 
 	var header := HBoxContainer.new()
 	root.add_child(header)
-	var heading := _label("КУЗНИЦА  /  ИНЖЕНЕРНАЯ МАСТЕРСКАЯ", 14, Color("#f0d6a5"))
+	var heading := _label("КУЗНИЦА  /  ИНЖЕНЕРНАЯ МАСТЕРСКАЯ", 14, Color("#f4f0df"))
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	heading.size_flags_stretch_ratio = 1.0
 	header.add_child(heading)
@@ -142,7 +154,7 @@ func _build_interface() -> void:
 	var work_panel := PanelContainer.new()
 	work_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	work_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	work_panel.add_theme_stylebox_override("panel", _style(Color("#211a15"), Color("#725638"), 1))
+	work_panel.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 1))
 	root.add_child(work_panel)
 	var work_margin := MarginContainer.new()
 	for pair in [["margin_left", 10], ["margin_right", 10], ["margin_top", 8], ["margin_bottom", 8]]:
@@ -151,8 +163,8 @@ func _build_interface() -> void:
 	var work_body := VBoxContainer.new()
 	work_body.add_theme_constant_override("separation", 5)
 	work_margin.add_child(work_body)
-	work_body.add_child(_label("ИНЖЕНЕРНАЯ СХЕМА", 13, Color("#c99b60")))
-	graph_hint = _label("Перетащи карты из руки на поле. Соединяй выход одного узла со входом следующего.", 10, Color("#b8a58d"))
+	work_body.add_child(_label("ИНЖЕНЕРНАЯ СХЕМА", 13, Color("#f4f0df")))
+	graph_hint = _label("Перетащи карты из руки на поле. Соединяй выход одного узла со входом следующего.", 10, Color("#f4f0df"))
 	graph_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	work_body.add_child(graph_hint)
 	graph = GraphCanvas.new()
@@ -179,9 +191,9 @@ func _build_interface() -> void:
 	clear_button.pressed.connect(_clear_graph)
 	graph_buttons.add_child(clear_button)
 
-	report_label = _label("", 10, Color("#d9c5a5"))
+	report_label = _label("", 10, Color("#f4f0df"))
 	report_label.visible = false
-	status_label = _label("Перетащи ресурсы и карты действий из инвентаря в руку.", 10, Color("#e7c78d"))
+	status_label = _label("Перетащи ресурсы и карты действий из инвентаря в руку.", 10, Color("#f4f0df"))
 	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root.add_child(status_label)
 
@@ -189,7 +201,7 @@ func _build_interface() -> void:
 	hand_zone.host = self
 	hand_zone.zone_kind = "hand"
 	hand_zone.custom_minimum_size.y = 150
-	hand_zone.add_theme_stylebox_override("panel", _style(Color("#302219"), Color("#987044"), 1))
+	hand_zone.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 1))
 	root.add_child(hand_zone)
 	var hand_margin := MarginContainer.new()
 	for pair in [["margin_left", 8], ["margin_right", 8], ["margin_top", 6], ["margin_bottom", 6]]:
@@ -200,8 +212,8 @@ func _build_interface() -> void:
 	hand_margin.add_child(hand_body)
 	var hand_header := HBoxContainer.new()
 	hand_body.add_child(hand_header)
-	hand_header.add_child(_label("РУКА · 8 СЛОТОВ", 11, Color("#c99b60")))
-	hand_count_label = _label("", 9, Color("#b8a58d"))
+	hand_header.add_child(_label("РУКА · 8 СЛОТОВ", 11, Color("#f4f0df")))
+	hand_count_label = _label("", 9, Color("#f4f0df"))
 	hand_count_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hand_count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	hand_header.add_child(hand_count_label)
@@ -212,8 +224,9 @@ func _build_interface() -> void:
 	discard_zone.host = self
 	discard_zone.zone_kind = "discard"
 	discard_zone.custom_minimum_size = Vector2(95, 30)
-	discard_zone.add_theme_stylebox_override("panel", _style(Color("#482321"), Color("#a45b4f"), 1))
-	var discard_label := _label("СБРОСИТЬ", 9, Color("#e2b0a0"))
+	discard_zone.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 1))
+	var discard_label := _label("СБРОСИТЬ", 9, Color("#f4f0df"))
+	discard_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	discard_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	discard_zone.add_child(discard_label)
 	hand_row.add_child(discard_zone)
@@ -230,12 +243,13 @@ func _build_interface() -> void:
 
 
 func _build_inventory_window() -> void:
-	inventory_window = PanelContainer.new()
+	inventory_window = InventoryDropWindow.new()
+	inventory_window.host = self
 	inventory_window.position = Vector2(24, 76)
 	inventory_window.custom_minimum_size = Vector2(370, 560)
 	inventory_window.size = Vector2(370, 560)
 	inventory_window.z_index = 10
-	inventory_window.add_theme_stylebox_override("panel", _style(Color("#292019"), Color("#c09258"), 2))
+	inventory_window.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 2))
 	add_child(inventory_window)
 
 	var body := VBoxContainer.new()
@@ -245,9 +259,9 @@ func _build_inventory_window() -> void:
 	drag_bar.custom_minimum_size.y = 28
 	drag_bar.target = inventory_window
 	drag_bar.mouse_filter = Control.MOUSE_FILTER_STOP
-	drag_bar.add_theme_stylebox_override("panel", _style(Color("#493321"), Color("#987044"), 1))
+	drag_bar.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 1))
 	body.add_child(drag_bar)
-	var title := _label("⠿  ИНВЕНТАРЬ · 32 ЯЧЕЙКИ", 11, Color("#f0d6a5"))
+	var title := _label("⠿  ИНВЕНТАРЬ · 32 ЯЧЕЙКИ", 11, Color("#f4f0df"))
 	title.position = Vector2(8, 5)
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	drag_bar.add_child(title)
@@ -286,7 +300,7 @@ func _build_drawer() -> void:
 	drawer.offset_bottom = -170
 	drawer.z_index = 20
 	drawer.visible = false
-	drawer.add_theme_stylebox_override("panel", _style(Color("#292019"), Color("#c09258"), 2))
+	drawer.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 2))
 	add_child(drawer)
 	var margin := MarginContainer.new()
 	for pair in [["margin_left", 12], ["margin_right", 12], ["margin_top", 10], ["margin_bottom", 10]]:
@@ -297,7 +311,7 @@ func _build_drawer() -> void:
 	margin.add_child(body)
 	var header := HBoxContainer.new()
 	body.add_child(header)
-	drawer_title = _label("АКТИВНЫЙ ЗАКАЗ", 14, Color("#f0d6a5"))
+	drawer_title = _label("АКТИВНЫЙ ЗАКАЗ", 14, Color("#f4f0df"))
 	drawer_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(drawer_title)
 	var close_button := _button("×", 28)
@@ -338,18 +352,18 @@ func _refresh_drawer() -> void:
 
 func _add_order_content() -> void:
 	if current_order == null:
-		drawer_content.add_child(_label("Сейчас нет активного заказа.", 11, Color("#d9c5a5")))
+		drawer_content.add_child(_label("Сейчас нет активного заказа.", 11, Color("#f4f0df")))
 		return
 	var item_id := current_order.item_id
-	drawer_content.add_child(_label("Заказчик: %s" % current_order.client_name, 12, Color("#f0d6a5")))
-	drawer_content.add_child(_label("Изделие: %s" % MATERIALS.get(item_id, {}).get("name", item_id), 11, Color("#d9c5a5")))
-	drawer_content.add_child(_label("Требуемое качество: %d/100" % current_order.required_quality, 10, Color("#d9c5a5")))
-	drawer_content.add_child(_label("Награда: %d монет" % current_order.reward_money, 10, Color("#d9c5a5")))
-	var description := _label(current_order.description, 10, Color("#b8a58d"))
+	drawer_content.add_child(_label("Заказчик: %s" % current_order.client_name, 12, Color("#f4f0df")))
+	drawer_content.add_child(_label("Изделие: %s" % MATERIALS.get(item_id, {}).get("name", item_id), 11, Color("#f4f0df")))
+	drawer_content.add_child(_label("Требуемое качество: %d/100" % current_order.required_quality, 10, Color("#f4f0df")))
+	drawer_content.add_child(_label("Награда: %d монет" % current_order.reward_money, 10, Color("#f4f0df")))
+	var description := _label(current_order.description, 10, Color("#f4f0df"))
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	drawer_content.add_child(description)
 	var quality := int(item_qualities.get(item_id, 0))
-	drawer_content.add_child(_label("В инвентаре: %d · качество: %d" % [int(inventory.get(item_id, 0)), quality], 10, Color("#d9c5a5")))
+	drawer_content.add_child(_label("В инвентаре: %d · качество: %d" % [int(inventory.get(item_id, 0)), quality], 10, Color("#f4f0df")))
 	var deliver := _button("Сдать изделие", 36)
 	deliver.disabled = int(inventory.get(item_id, 0)) <= 0
 	deliver.pressed.connect(_on_delivery_pressed)
@@ -357,7 +371,7 @@ func _add_order_content() -> void:
 
 
 func _add_analysis_content() -> void:
-	var intro := _label("Отчёт появляется после сдачи заказа. Записи сохраняются между запусками игры.", 10, Color("#b8a58d"))
+	var intro := _label("Отчёт появляется после сдачи заказа. Записи сохраняются между запусками игры.", 10, Color("#f4f0df"))
 	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	drawer_content.add_child(intro)
 	var scroll := ScrollContainer.new()
@@ -368,7 +382,7 @@ func _add_analysis_content() -> void:
 	history_list.add_theme_constant_override("separation", 5)
 	scroll.add_child(history_list)
 	if history.is_empty():
-		history_list.add_child(_label("История пока пуста.", 10, Color("#d9c5a5")))
+		history_list.add_child(_label("История пока пуста.", 10, Color("#f4f0df")))
 		return
 	for index in range(history.size() - 1, -1, -1):
 		var record: Dictionary = history[index]
@@ -399,13 +413,13 @@ func _show_history_record(index: int) -> void:
 		"Цепочка: %s" % ", ".join(PackedStringArray(record.get("recipe_chain", []))),
 		"Результат: %s" % str(record.get("result", "Заказ сдан"))
 	]:
-		var label := _label(line, 10, Color("#d9c5a5"))
+		var label := _label(line, 10, Color("#f4f0df"))
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		drawer_content.add_child(label)
 
 
 func _add_blueprints_content() -> void:
-	var note := _label("Тестовая справка: выбери чертёж, чтобы увидеть необходимые материалы и операции.", 10, Color("#b8a58d"))
+	var note := _label("Тестовая справка: выбери чертёж, чтобы увидеть необходимые материалы и операции.", 10, Color("#f4f0df"))
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	drawer_content.add_child(note)
 	var scroll := ScrollContainer.new()
@@ -422,7 +436,7 @@ func _add_blueprints_content() -> void:
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.pressed.connect(_select_blueprint.bind(str(recipe_id)))
 		list.add_child(button)
-	blueprint_detail = _label("Выбери чертёж из списка.", 11, Color("#f0d6a5"))
+	blueprint_detail = _label("Выбери чертёж из списка.", 11, Color("#f4f0df"))
 	blueprint_detail.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	drawer_content.add_child(blueprint_detail)
 	if blueprint_selected != "":
@@ -446,6 +460,15 @@ func _select_blueprint(recipe_id: String) -> void:
 		int(recipe.get("coal_cost", 0))
 	]
 
+
+
+func _style(fill: Color, border: Color, border_width: int) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = fill
+	box.border_color = border
+	box.set_border_width_all(border_width)
+	box.set_corner_radius_all(0)
+	return box
 
 func _make_drag_preview(title: String, subtitle: String, symbol: String, preview_size: Vector2, payload: Dictionary) -> Control:
 	return _make_visual_card(payload, title, subtitle, symbol, Color("#ffffff"), preview_size)
@@ -480,7 +503,7 @@ func _make_visual_card(payload: Dictionary, title: String, subtitle: String, sym
 	art_frame.custom_minimum_size.y = 55 if card_size.x < 90 else 68
 	var art_style := StyleBoxFlat.new()
 	art_style.bg_color = Color("#171717")
-	art_style.border_color = Color("#777777")
+	art_style.border_color = Color("#f4f0df")
 	art_style.set_border_width_all(1)
 	art_frame.add_theme_stylebox_override("panel", art_style)
 	art_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -495,7 +518,7 @@ func _make_visual_card(payload: Dictionary, title: String, subtitle: String, sym
 	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(name_label)
-	var sub_label := _label(subtitle, 7 if card_size.x < 90 else 8, Color("#bdb9ad"))
+	var sub_label := _label(subtitle, 7 if card_size.x < 90 else 8, Color("#f4f0df"))
 	sub_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sub_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	sub_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -523,15 +546,15 @@ func _refresh_inventory() -> void:
 				var data: Dictionary = MATERIALS.get(id, {})
 				var quality := int(item_qualities.get(id, data.get("quality", 0)))
 				var payload := {"origin": "inventory", "kind": "resource", "id": id, "quality": quality}
-				inventory_grid.add_child(_make_visual_card(payload, "%s ×%d" % [data.get("name", id), int(entry.count)], "Качество %d" % quality, "◆", Color("#bd9259"), Vector2(76, 94)))
+				inventory_grid.add_child(_make_visual_card(payload, "%s ×%d" % [data.get("name", id), int(entry.count)], "Качество %d" % quality, "◆", Color("#f4f0df"), Vector2(76, 94)))
 			else:
 				var action_data: Dictionary = ACTIONS.get(id, {})
 				var payload := {"origin": "inventory", "kind": "action", "id": id}
-				inventory_grid.add_child(_make_visual_card(payload, str(action_data.get("name", id)), "Карта действия", str(action_data.get("symbol", "⚒")), Color("#80a88a"), Vector2(34, 62)))
+				inventory_grid.add_child(_make_visual_card(payload, str(action_data.get("name", id)), "Карта действия", str(action_data.get("symbol", "⚒")), Color("#f4f0df"), Vector2(34, 62)))
 		else:
 			var empty := PanelContainer.new()
 			empty.custom_minimum_size = Vector2(76, 94)
-			empty.add_theme_stylebox_override("panel", _style(Color("#211a15"), Color("#5c4934"), 1))
+			empty.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 1))
 			inventory_grid.add_child(empty)
 
 
@@ -548,19 +571,20 @@ func _refresh_hand() -> void:
 				var material: Dictionary = MATERIALS.get(id, {})
 				var quality := int(data.get("quality", 0))
 				var payload := {"origin": "hand", "kind": "resource", "id": id, "uid": data.uid}
-				hand_list.add_child(_make_visual_card(payload, str(material.get("name", id)), "Ресурс · качество %d" % quality, "◆", Color("#bd9259"), HAND_CARD_SIZE))
+				hand_list.add_child(_make_visual_card(payload, str(material.get("name", id)), "Ресурс · качество %d" % quality, "◆", Color("#f4f0df"), HAND_CARD_SIZE))
 			else:
 				var action: Dictionary = ACTIONS.get(id, {})
 				var payload := {"origin": "hand", "kind": "action", "id": id, "uid": data.uid}
-				hand_list.add_child(_make_visual_card(payload, str(action.get("name", id)), "Действие · многоразовое", str(action.get("symbol", "⚒")), Color("#80a88a"), HAND_CARD_SIZE))
+				hand_list.add_child(_make_visual_card(payload, str(action.get("name", id)), "Действие · многоразовое", str(action.get("symbol", "⚒")), Color("#f4f0df"), HAND_CARD_SIZE))
 		else:
 			var empty := DropZone.new()
 			empty.host = self
 			empty.zone_kind = "hand"
 			empty.custom_minimum_size = HAND_CARD_SIZE
-			empty.add_theme_stylebox_override("panel", _style(Color("#241d17"), Color("#66513a"), 1))
-			var label := _label("ПУСТО", 8, Color("#88745d"))
+			empty.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 1))
+			var label := _label("ПУСТО", 8, Color("#f4f0df"))
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			empty.add_child(label)
 			hand_list.add_child(empty)
 	if hand_count_label != null:
