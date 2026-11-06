@@ -34,22 +34,38 @@ class DropZone extends PanelContainer:
 	var zone_kind := ""
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		return host != null and host.call("can_drop_to_zone", zone_kind, data)
+		var allowed := host != null and host.call("can_drop_to_zone", zone_kind, data)
+		self_modulate = Color("#b8e8c0") if allowed else Color("#e8b8b8")
+		tooltip_text = "Можно положить карту" if allowed else "Сюда нельзя переместить эту карту"
+		return allowed
 
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
+		self_modulate = Color.WHITE
 		if host != null:
 			host.call("drop_to_zone", zone_kind, data)
+
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_DRAG_END:
+			self_modulate = Color.WHITE
 
 
 class GraphCanvas extends GraphEdit:
 	var host: Control
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		return host != null and host.call("can_drop_to_graph", data)
+		var allowed := host != null and host.call("can_drop_to_graph", data)
+		self_modulate = Color("#b8e8c0") if allowed else Color("#e8b8b8")
+		tooltip_text = "Добавить карту в схему" if allowed else "Эту карту нельзя добавить в схему"
+		return allowed
 
 	func _drop_data(at_position: Vector2, data: Variant) -> void:
+		self_modulate = Color.WHITE
 		if host != null:
 			host.call("drop_to_graph", at_position + scroll_offset, data)
+
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_DRAG_END:
+			self_modulate = Color.WHITE
 
 
 var inventory: Dictionary = {"iron": 2, "copper": 2, "coal": 3}
@@ -487,7 +503,13 @@ func _return_hand_card(data: Dictionary) -> void:
 func can_drop_to_graph(data: Variant) -> bool:
 	if not data is Dictionary or str(data.get("origin", "")) != "hand":
 		return false
-	return str(data.get("kind", "")) in ["resource", "action"]
+	var kind := str(data.get("kind", ""))
+	var item_id := str(data.get("id", ""))
+	if kind == "action":
+		return true
+	if kind == "resource":
+		return str(MATERIALS.get(item_id, {}).get("kind", "")) != "resource"
+	return false
 
 
 func drop_to_graph(position: Vector2, data: Dictionary) -> void:
