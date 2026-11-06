@@ -418,8 +418,16 @@ func _discard_hand_resource(data: Dictionary) -> void:
 	_update_status("Ресурс «%s» выброшен и потерян." % MATERIALS.get(str(discarded.id), {}).get("name", discarded.id))
 
 
-func can_drop_to_card(_target: Dictionary, data: Variant) -> bool:
-	return data is Dictionary and ((str(data.get("origin", "")) == "inventory" and hand_cards.size() < HAND_LIMIT) or str(data.get("origin", "")) == "hand")
+func can_drop_to_card(target: Dictionary, data: Variant) -> bool:
+	if not data is Dictionary:
+		return false
+	var target_origin := str(target.get("origin", ""))
+	var source_origin := str(data.get("origin", ""))
+	if target_origin == "inventory" and source_origin == "hand":
+		return true
+	if target_origin == "hand" and source_origin == "inventory":
+		return hand_cards.size() < HAND_LIMIT
+	return false
 
 
 func drop_to_card(_target: Dictionary, data: Variant) -> void:
