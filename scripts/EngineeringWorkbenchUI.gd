@@ -471,7 +471,7 @@ func _style(fill: Color, border: Color, border_width: int) -> StyleBoxFlat:
 	return box
 
 func _make_drag_preview(title: String, subtitle: String, symbol: String, preview_size: Vector2, payload: Dictionary) -> Control:
-	return _make_visual_card(payload, title, subtitle, symbol, Color("#ffffff"), preview_size)
+	return _make_visual_card(payload, title, subtitle, symbol, Color("#f4f0df"), preview_size)
 
 
 func _make_visual_card(payload: Dictionary, title: String, subtitle: String, symbol: String, tint: Color, card_size: Vector2) -> FullDragCard:
@@ -502,7 +502,7 @@ func _make_visual_card(payload: Dictionary, title: String, subtitle: String, sym
 	var art_frame := PanelContainer.new()
 	art_frame.custom_minimum_size.y = 55 if card_size.x < 90 else 68
 	var art_style := StyleBoxFlat.new()
-	art_style.bg_color = Color("#171717")
+	art_style.bg_color = Color("#080808")
 	art_style.border_color = Color("#f4f0df")
 	art_style.set_border_width_all(1)
 	art_frame.add_theme_stylebox_override("panel", art_style)
