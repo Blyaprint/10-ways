@@ -381,27 +381,6 @@ At the very least, it is true
 that man has no control 
 even over his own will."
 
-[node name="TEXTBOX_Talk_NPC2" type="Label" parent="." unique_id=464807763]
-layout_mode = 0
-offset_left = 68.0
-offset_top = 225.0
-offset_right = 227.0
-offset_bottom = 378.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("2_nuppg")
-theme_override_font_sizes/font_size = 16
-text = "What determines the fate 
-of humanity in this world? 
-Is it some unseen entity or 
-law - something like the 
-Hand of God hovering above 
-the world? 
-At the very least, it is true 
-that man has no control 
-even over his own will."
-label_settings = SubResource("LabelSettings_7wyo5")
-horizontal_alignment = 1
-
 [node name="Frame" type="Sprite2D" parent="." unique_id=21367973]
 position = Vector2(400, 225)
 texture = ExtResource("76_ds2wf")
