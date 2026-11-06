@@ -126,6 +126,8 @@ func _build_interface() -> void:
 	clear_button.pressed.connect(_clear_graph)
 	graph_buttons.add_child(clear_button)
 
+	report_label = _label("", 10, Color("#d9c5a5"))
+	report_label.visible = false
 	status_label = _label("Перетащи ресурсы и карты действий из инвентаря в руку.", 10, Color("#e7c78d"))
 	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root.add_child(status_label)
@@ -523,8 +525,10 @@ func _on_delivery_pressed() -> void:
 		"item_name": str(MATERIALS.get(item_id, {}).get("name", item_id)),
 		"quality": quality,
 		"required_quality": current_order.required_quality,
-		"coal_used": 0,
-		"result": "Заказ сдан"
+		"coal_used": last_coal_used,
+		"operations": last_action_count,
+		"recipe_chain": last_recipe_chain.duplicate(),
+		"result": "Заказ выполнен" if quality >= current_order.required_quality else "Качество ниже требования"
 	}
 	history.append(record)
 	_save_history()
