@@ -102,7 +102,7 @@ class CardArtwork extends Control:
 				if rows[y][x] == "#":
 					draw_rect(Rect2(origin + Vector2(x * pixel, y * pixel), Vector2(pixel, pixel)), Color("#f4f0df"))
 
-var inventory_window: PanelContainer
+var inventory_window: InventoryDropWindow
 var inventory_grid: GridContainer
 var drawer: PanelContainer
 var drawer_content: VBoxContainer
