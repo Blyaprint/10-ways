@@ -147,7 +147,16 @@ class FullDragCard extends PanelContainer:
 
 	func _get_drag_data(_at_position: Vector2) -> Variant:
 		if host != null:
-			set_drag_preview(host.call("_make_drag_preview", title_text, subtitle_text, symbol_text, card_size, payload))
+			var preview: Control = host.call("_make_drag_preview", title_text, subtitle_text, symbol_text, card_size, payload)
+			if preview != null:
+				preview.custom_minimum_size = card_size
+				preview.size = card_size
+				preview.scale = Vector2.ONE
+				preview.modulate = Color.WHITE
+				preview.visible = true
+				preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				preview.z_index = 4096
+				set_drag_preview(preview)
 		if str(payload.get("origin", "")) == "hand":
 			hide()
 			if host != null:
