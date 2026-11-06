@@ -36,13 +36,13 @@ class CardDropRow extends HBoxContainer:
 		if what == NOTIFICATION_DRAG_END:
 			self_modulate = Color.WHITE
 
-class HandFan extends Control:
+	const CARD_SIZE := Vector2(112, 148)
 	var host: Control
 	var hovered_uid := -1
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 		var allowed: bool = host != null and bool(host.call("can_drop_to_zone", "hand", data))
-		self_modulate = Color("#b8e8c0") if allowed else Color.WHITE
+		self_modulate = Color("#b8e8c0") if allowed else Color("#e8b8b8")
 		return allowed
 
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
@@ -58,12 +58,16 @@ class HandFan extends Control:
 		layout_cards(true)
 
 	func layout_cards(animated: bool = true) -> void:
-		var count: int = get_child_count()
+		var visible_cards: Array[Control] = []
+		for child in get_children():
+			if child is Control and child.visible:
+				visible_cards.append(child)
+		var count: int = visible_cards.size()
 		if count == 0:
 			return
 		var available_width: float = maxf(size.x, 720.0)
-		var card_width: float = HAND_CARD_SIZE.x
-		var card_height: float = HAND_CARD_SIZE.y
+		var card_width: float = CARD_SIZE.x
+		var card_height: float = CARD_SIZE.y
 		var spacing: float = 0.0
 		if count > 1:
 			spacing = clampf((available_width - card_width) / float(count - 1), 58.0, card_width * 0.82)
@@ -71,7 +75,7 @@ class HandFan extends Control:
 		var start_x: float = (available_width - total_width) * 0.5
 		var center: float = float(count - 1) * 0.5
 		for index in range(count):
-			var card := get_child(index) as Control
+			var card := visible_cards[index]
 			if card == null:
 				continue
 			var uid: int = int(card.get_meta("hand_uid", -1))
@@ -102,10 +106,14 @@ class HandFan extends Control:
 				card.scale = target_scale
 
 	func _index_for_uid(uid: int) -> int:
-		for index in range(get_child_count()):
-			var card := get_child(index) as Control
-			if card != null and int(card.get_meta("hand_uid", -1)) == uid:
-				return index
+		var visible_index := 0
+		for child in get_children():
+			var card := child as Control
+			if card == null or not card.visible:
+				continue
+			if int(card.get_meta("hand_uid", -1)) == uid:
+				return visible_index
+			visible_index += 1
 		return -1
 
 	func _notification(what: int) -> void:
@@ -137,6 +145,8 @@ class FullDragCard extends PanelContainer:
 			set_drag_preview(host.call("_make_drag_preview", title_text, subtitle_text, symbol_text, card_size, payload))
 		if str(payload.get("origin", "")) == "hand":
 			hide()
+			if host != null:
+				host.call("_on_hand_card_drag_started", int(payload.get("uid", -1)))
 		return payload
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
@@ -153,6 +163,8 @@ class FullDragCard extends PanelContainer:
 		if what == NOTIFICATION_DRAG_END:
 			self_modulate = Color.WHITE
 			show()
+			if host != null and str(payload.get("origin", "")) == "hand":
+				host.call("_on_hand_card_drag_ended", int(payload.get("uid", -1)))
 
 
 class InventoryDropWindow extends PanelContainer:
@@ -747,6 +759,14 @@ func _refresh_hand() -> void:
 func _set_hand_card_hover(uid: int, hovered: bool) -> void:
 	if hand_list != null:
 		hand_list.set_hovered_card(uid, hovered)
+
+func _on_hand_card_drag_started(_uid: int) -> void:
+	if hand_list != null:
+		hand_list.layout_cards(true)
+
+func _on_hand_card_drag_ended(_uid: int) -> void:
+	if hand_list != null:
+		hand_list.layout_cards(true)
 
 func _refresh_all() -> void:
 	_refresh_inventory()
