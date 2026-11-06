@@ -129,10 +129,12 @@ func _build_interface() -> void:
 	inventory_zone.add_theme_stylebox_override("panel", _style(Color("#292019"), Color("#725638"), 1))
 	upper.add_child(inventory_zone)
 	var inv_margin := MarginContainer.new()
+	inv_margin.mouse_filter = Control.MOUSE_FILTER_PASS
 	for pair in [["margin_left", 7], ["margin_right", 7], ["margin_top", 6], ["margin_bottom", 6]]:
 		inv_margin.add_theme_constant_override(pair[0], pair[1])
 	inventory_zone.add_child(inv_margin)
 	var inv_body := VBoxContainer.new()
+	inv_body.mouse_filter = Control.MOUSE_FILTER_PASS
 	inv_body.add_theme_constant_override("separation", 5)
 	inv_margin.add_child(inv_body)
 	inv_body.add_child(_label("ИНВЕНТАРЬ", 12, Color("#c99b60")))
@@ -233,13 +235,16 @@ func _build_interface() -> void:
 	hand_zone.add_theme_stylebox_override("panel", _style(Color("#302219"), Color("#987044"), 1))
 	root.add_child(hand_zone)
 	var hand_margin := MarginContainer.new()
+	hand_margin.mouse_filter = Control.MOUSE_FILTER_PASS
 	for pair in [["margin_left", 7], ["margin_right", 7], ["margin_top", 5], ["margin_bottom", 5]]:
 		hand_margin.add_theme_constant_override(pair[0], pair[1])
 	hand_zone.add_child(hand_margin)
 	var hand_body := VBoxContainer.new()
+	hand_body.mouse_filter = Control.MOUSE_FILTER_PASS
 	hand_body.add_theme_constant_override("separation", 4)
 	hand_margin.add_child(hand_body)
 	var hand_header := HBoxContainer.new()
+	hand_header.mouse_filter = Control.MOUSE_FILTER_PASS
 	hand_body.add_child(hand_header)
 	hand_header.add_child(_label("РУКА", 11, Color("#c99b60")))
 	var hand_count_label := _label("Перетащи сюда ресурсы и действия из инвентаря", 9, Color("#b8a58d"))
@@ -569,6 +574,11 @@ func _on_run_graph_pressed() -> void:
 		if next_node == null or str(next_node.get_meta("kind", "")) != "action":
 			_update_status("После материала должна идти карта действия.")
 			return
+		var action_uid := int(next_node.get_meta("uid", -1))
+		var action_card_index := _find_hand_card_index(action_uid)
+		if action_card_index < 0 or str(hand_cards[action_card_index].get("kind", "")) != "action":
+			_update_status("Верни карту действия в руку, чтобы использовать её в схеме.")
+			return
 		action_ids.append(str(next_node.get_meta("id", "")))
 		current_node_name = next_node_name
 	if action_ids.is_empty():
@@ -657,6 +667,7 @@ func _consume_item(item_id: String, amount: int) -> void:
 
 
 func _clear_graph() -> void:
+	graph.clear_connections()
 	for child in graph.get_children():
 		if child is GraphNode:
 			child.queue_free()
