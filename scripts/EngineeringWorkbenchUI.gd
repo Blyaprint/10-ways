@@ -330,7 +330,7 @@ func _show_history_record(index: int) -> void:
 		"Требовалось: %s/100" % str(record.get("required_quality", 0)),
 		"Операций: %s" % str(record.get("operations", 0)),
 		"Расход угля: %s" % str(record.get("coal_used", 0)),
-		"Цепочка: %s" % ", ".join(record.get("recipe_chain", [])),
+		"Цепочка: %s" % ", ".join(chain_parts),
 		"Результат: %s" % str(record.get("result", "Заказ сдан"))
 	]:
 		var label := _label(line, 10, Color("#d9c5a5"))
