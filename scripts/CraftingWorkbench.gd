@@ -351,7 +351,7 @@ func _on_blueprint_pressed() -> void:
 func _on_delivery_pressed() -> void:
 	if current_order == null:
 		return
-	var item_id := str(current_order.get("item_id"))
+	var item_id := current_order.item_id
 	if int(inventory.get(item_id, 0)) <= 0:
 		return
 	var quality := int(item_qualities.get(item_id, 0))
