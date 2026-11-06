@@ -36,6 +36,7 @@ class CardDropRow extends HBoxContainer:
 		if what == NOTIFICATION_DRAG_END:
 			self_modulate = Color.WHITE
 
+class HandFan extends Control:
 	const CARD_SIZE := Vector2(112, 148)
 	var host: Control
 	var hovered_uid := -1
