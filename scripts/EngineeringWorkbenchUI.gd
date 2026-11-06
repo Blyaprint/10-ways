@@ -23,14 +23,14 @@ class CardDropRow extends HBoxContainer:
 	var host: Control
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		var allowed := host != null and host.call("can_drop_to_zone", "hand", data)
+		var allowed: bool = host != null and bool(host.call("can_drop_to_zone", "hand", data))
 		self_modulate = Color("#b8e8c0") if allowed else Color("#e8b8b8")
 		return allowed
 
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		self_modulate = Color.WHITE
 		if host != null:
-			host.call("drop_to_zone", "hand", data)
+			host.call("drop_to_zone", "hand", data))
 
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_DRAG_END:
@@ -50,7 +50,7 @@ class FullDragCard extends PanelContainer:
 		return payload
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		var allowed := host != null and host.call("can_drop_to_card", payload, data)
+		var allowed: bool = host != null and bool(host.call("can_drop_to_card", payload, data))
 		self_modulate = Color("#b8e8c0") if allowed else Color("#e8b8b8")
 		return allowed
 
@@ -71,14 +71,14 @@ class InventoryDropWindow extends PanelContainer:
 	var host: Control
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		var allowed := host != null and host.call("can_drop_to_zone", "inventory", data)
+		var allowed: bool = host != null and bool(host.call("can_drop_to_zone", "inventory", data))
 		self_modulate = Color("#b8e8c0") if allowed else Color("#e8b8b8")
 		return allowed
 
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		self_modulate = Color.WHITE
 		if host != null:
-			host.call("drop_to_zone", "inventory", data)
+			host.call("drop_to_zone", "inventory", data))
 
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_DRAG_END:
