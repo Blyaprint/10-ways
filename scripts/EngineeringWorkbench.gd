@@ -501,15 +501,24 @@ func drop_to_graph(position: Vector2, data: Dictionary) -> void:
 	node.name = "ProcessNode_%d" % node_serial
 	node.title = str(MATERIALS.get(item_id, {}).get("name", item_id)) if kind == "resource" else str(ACTIONS.get(item_id, {}).get("name", item_id))
 	node.position_offset = position
-	node.custom_minimum_size = Vector2(130, 62)
+	node.custom_minimum_size = Vector2(176, 94)
 	node.set_meta("kind", kind)
 	node.set_meta("id", item_id)
 	node.set_meta("uid", int(data.get("uid", -1)))
-	var info := "Входной материал" if kind == "resource" else str(ACTIONS.get(item_id, {}).get("description", "Операция обработки"))
-	var label := _label(info, 9, Color("#d9c5a5"))
+	var card_panel := _style(Color("#080808"), Color("#f4f0df"), 2)
+	var selected_panel := _style(Color("#080808"), Color("#ffffff"), 3)
+	var title_panel := _style(Color("#080808"), Color("#f4f0df"), 1)
+	node.add_theme_stylebox_override("panel", card_panel)
+	node.add_theme_stylebox_override("panel_selected", selected_panel)
+	node.add_theme_stylebox_override("titlebar", title_panel)
+	node.add_theme_stylebox_override("titlebar_selected", selected_panel)
+	node.add_theme_color_override("title_color", Color("#f4f0df"))
+	var info := "ВХОДНОЙ МАТЕРИАЛ · КАЧЕСТВО %d/100" % int(data.get("quality", 0)) if kind == "resource" else str(ACTIONS.get(item_id, {}).get("description", "Операция обработки"))
+	var label := _label(info, 9, Color("#f4f0df"))
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size.y = 38
 	node.add_child(label)
-	var port_color := Color("#c99b60") if kind == "resource" else Color("#80a88a")
+	var port_color := Color("#f4f0df")
 	node.set_slot(0, kind == "action", 0, port_color, true, 0, port_color)
 	graph.add_child(node)
 	_update_status("Добавлен узел: %s." % node.title)
