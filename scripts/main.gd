@@ -23,7 +23,7 @@ func _ready() -> void:
 	if game_content:
 		crafting_workbench = CRAFTING_WORKBENCH_SCENE.instantiate() as Control
 		crafting_workbench.name = "CraftingWorkbench"
-		crafting_workbench.z_index = 4097
+		crafting_workbench.z_index = 4096
 		game_content.add_child(crafting_workbench)
 		crafting_workbench.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		crafting_workbench.connect("craft_completed", Callable(self, "_on_craft_completed"))
