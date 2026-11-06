@@ -505,7 +505,9 @@ func _refresh_hand() -> void:
 				var payload := {"origin": "hand", "kind": "action", "id": id, "uid": data.uid}
 				hand_list.add_child(_make_visual_card(payload, str(action.get("name", id)), "Действие · многоразовое", str(action.get("symbol", "⚒")), Color("#80a88a"), HAND_CARD_SIZE))
 		else:
-			var empty := PanelContainer.new()
+			var empty := DropZone.new()
+			empty.host = self
+			empty.zone_kind = "hand"
 			empty.custom_minimum_size = HAND_CARD_SIZE
 			empty.add_theme_stylebox_override("panel", _style(Color("#241d17"), Color("#66513a"), 1))
 			var label := _label("ПУСТО", 8, Color("#88745d"))
