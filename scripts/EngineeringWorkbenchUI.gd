@@ -614,7 +614,24 @@ func _style(fill: Color, border: Color, border_width: int) -> StyleBoxFlat:
 	return box
 
 func _make_drag_preview(title: String, subtitle: String, symbol: String, preview_size: Vector2, payload: Dictionary) -> Control:
-	return _make_visual_card(payload, title, subtitle, symbol, Color("#f4f0df"), preview_size)
+	# Use a fixed-size clipping viewport so child minimum sizes cannot stretch the drag ghost.
+	var preview := Control.new()
+	preview.custom_minimum_size = preview_size
+	preview.size = preview_size
+	preview.clip_contents = true
+	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	preview.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	preview.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+
+	var card := _make_visual_card(payload, title, subtitle, symbol, Color("#f4f0df"), preview_size)
+	card.position = Vector2.ZERO
+	card.custom_minimum_size = preview_size
+	card.size = preview_size
+	card.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	card.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	card.clip_contents = true
+	preview.add_child(card)
+	return preview
 
 
 func _make_visual_card(payload: Dictionary, title: String, subtitle: String, symbol: String, tint: Color, card_size: Vector2) -> FullDragCard:
