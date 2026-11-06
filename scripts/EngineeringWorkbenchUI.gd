@@ -35,10 +35,11 @@ class FullDragCard extends PanelContainer:
 	var title_text := ""
 	var subtitle_text := ""
 	var symbol_text := "◆"
+	var card_size := Vector2(112, 132)
 
 	func _get_drag_data(_at_position: Vector2) -> Variant:
 		if host != null:
-			set_drag_preview(host.call("_make_drag_preview", title_text, subtitle_text, symbol_text))
+			set_drag_preview(host.call("_make_drag_preview", title_text, subtitle_text, symbol_text, card_size))
 		return payload
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
@@ -47,6 +48,47 @@ class FullDragCard extends PanelContainer:
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		if host != null:
 			host.call("drop_to_card", payload, data)
+
+
+
+class CardArtwork extends Control:
+	var item_id := ""
+	var item_kind := ""
+
+	func _draw() -> void:
+		var rows: Array[String] = []
+		match item_id:
+			"iron", "copper":
+				rows = [".#####.", "#######", "#######", ".#####.", "..###.."]
+			"coal":
+				rows = ["..###..", ".#####.", "#######", "#######", ".#####."]
+			"heated_iron", "heated_copper":
+				rows = ["...#...", "..###..", ".#####.", "..###..", ".#.#.#.", "......."]
+			"iron_blank", "copper_blank":
+				rows = ["#######", "#######", "#######", "#######"]
+			"horseshoe":
+				rows = ["##...##", "##...##", "##...##", "##...##", ".#####.", "..###.."]
+			"copper_plate":
+				rows = ["#######", "#.....#", "#.###.#", "#.....#", "#######"]
+			_:
+				if item_kind == "action":
+					match item_id:
+						"heat":
+							rows = ["...#...", "..###..", ".#####.", "..###..", ".#.#.#."]
+						"forge":
+							rows = ["##.....", ".##....", "..##...", "#######", "...##..", "...##.."]
+						"bend":
+							rows = ["##.....", ".##....", "..##...", "...##..", "....##.", ".....##"]
+			if rows.is_empty():
+			rows = ["...#...", "..###..", ".#####.", "..###..", "...#..."]
+		var pixel := 5.0
+		var width := 7.0 * pixel
+		var height := float(rows.size()) * pixel
+		var origin := Vector2((size.x - width) * 0.5, (size.y - height) * 0.5)
+		for y in range(rows.size()):
+			for x in range(rows[y].length()):
+				if rows[y][x] == "#":
+					draw_rect(Rect2(origin + Vector2(x * pixel, y * pixel), Vector2(pixel, pixel)), Color("#f4f0df"))
 
 var inventory_window: PanelContainer
 var inventory_grid: GridContainer
@@ -190,8 +232,8 @@ func _build_interface() -> void:
 func _build_inventory_window() -> void:
 	inventory_window = PanelContainer.new()
 	inventory_window.position = Vector2(24, 76)
-	inventory_window.custom_minimum_size = Vector2(330, 300)
-	inventory_window.size = Vector2(330, 300)
+	inventory_window.custom_minimum_size = Vector2(370, 560)
+	inventory_window.size = Vector2(370, 560)
 	inventory_window.z_index = 10
 	inventory_window.add_theme_stylebox_override("panel", _style(Color("#292019"), Color("#c09258"), 2))
 	add_child(inventory_window)
@@ -211,7 +253,7 @@ func _build_inventory_window() -> void:
 	drag_bar.add_child(title)
 	var inventory_close := Button.new()
 	inventory_close.text = "×"
-	inventory_close.position = Vector2(298, 1)
+	inventory_close.position = Vector2(338, 1)
 	inventory_close.size = Vector2(28, 26)
 	inventory_close.z_index = 2
 	inventory_close.tooltip_text = "Закрыть инвентарь"
@@ -222,7 +264,7 @@ func _build_inventory_window() -> void:
 		grid_margin.add_theme_constant_override(pair[0], pair[1])
 	body.add_child(grid_margin)
 	inventory_grid = GridContainer.new()
-	inventory_grid.columns = 8
+	inventory_grid.columns = 4
 	inventory_grid.add_theme_constant_override("h_separation", 4)
 	inventory_grid.add_theme_constant_override("v_separation", 4)
 	grid_margin.add_child(inventory_grid)
@@ -401,57 +443,60 @@ func _select_blueprint(recipe_id: String) -> void:
 	]
 
 
-func _make_drag_preview(title: String, subtitle: String, symbol: String) -> Control:
-	var preview := PanelContainer.new()
-	preview.custom_minimum_size = Vector2(150, 174)
-	preview.add_theme_stylebox_override("panel", _style(Color("#3a2b20"), Color("#e0b36f"), 3))
-	var body := VBoxContainer.new()
-	body.add_theme_constant_override("separation", 5)
-	preview.add_child(body)
-	var art := CenterContainer.new()
-	art.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	var symbol_label := _label(symbol, 42, Color("#e8c48e"))
-	art.add_child(symbol_label)
-	body.add_child(art)
-	var name_label := _label(title, 12, Color("#f0d6a5"))
-	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	body.add_child(name_label)
-	var sub_label := _label(subtitle, 9, Color("#c6ad8c"))
-	sub_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	sub_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	body.add_child(sub_label)
-	return preview
+func _make_drag_preview(title: String, subtitle: String, symbol: String, preview_size: Vector2) -> Control:
+	return _make_visual_card({}, title, subtitle, symbol, Color("#ffffff"), preview_size)
 
 
-func _make_visual_card(payload: Dictionary, title: String, subtitle: String, symbol: String, tint: Color, size: Vector2) -> FullDragCard:
+func _make_visual_card(payload: Dictionary, title: String, subtitle: String, symbol: String, tint: Color, card_size: Vector2) -> FullDragCard:
 	var card := FullDragCard.new()
 	card.host = self
 	card.payload = payload.duplicate(true)
 	card.title_text = title
 	card.subtitle_text = subtitle
 	card.symbol_text = symbol
-	card.custom_minimum_size = size
+	card.card_size = card_size
+	card.custom_minimum_size = card_size
 	card.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	card.add_theme_stylebox_override("panel", _style(Color("#3a2b20"), tint, 2))
+	card.mouse_filter = Control.MOUSE_FILTER_STOP
+	var frame := StyleBoxFlat.new()
+	frame.bg_color = Color("#080808")
+	frame.border_color = Color("#f4f0df")
+	frame.set_border_width_all(2)
+	card.add_theme_stylebox_override("panel", frame)
+	var outer := MarginContainer.new()
+	for pair in [["margin_left", 5], ["margin_right", 5], ["margin_top", 5], ["margin_bottom", 5]]:
+		outer.add_theme_constant_override(pair[0], pair[1])
+	outer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.add_child(outer)
 	var body := VBoxContainer.new()
+	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_theme_constant_override("separation", 2)
-	card.add_child(body)
-	var art := CenterContainer.new()
-	art.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	var icon_label := _label(symbol, 23 if size.x > 90 else 15, tint.lightened(0.35))
-	art.add_child(icon_label)
-	body.add_child(art)
-	var name_label := _label(title, 10 if size.x > 90 else 8, Color("#f0d6a5"))
+	outer.add_child(body)
+	var art_frame := PanelContainer.new()
+	art_frame.custom_minimum_size.y = 55 if card_size.x < 90 else 68
+	var art_style := StyleBoxFlat.new()
+	art_style.bg_color = Color("#171717")
+	art_style.border_color = Color("#777777")
+	art_style.set_border_width_all(1)
+	art_frame.add_theme_stylebox_override("panel", art_style)
+	art_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var art := CardArtwork.new()
+	art.item_id = str(payload.get("id", ""))
+	art.item_kind = str(payload.get("kind", ""))
+	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	art_frame.add_child(art)
+	body.add_child(art_frame)
+	var name_label := _label(title, 9 if card_size.x < 90 else 10, Color("#f4f0df"))
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(name_label)
-	var sub_label := _label(subtitle, 8, Color("#c6ad8c"))
+	var sub_label := _label(subtitle, 7 if card_size.x < 90 else 8, Color("#bdb9ad"))
 	sub_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sub_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	sub_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(sub_label)
 	return card
-
 
 func _refresh_inventory() -> void:
 	if inventory_grid == null:
@@ -474,14 +519,14 @@ func _refresh_inventory() -> void:
 				var data: Dictionary = MATERIALS.get(id, {})
 				var quality := int(item_qualities.get(id, data.get("quality", 0)))
 				var payload := {"origin": "inventory", "kind": "resource", "id": id, "quality": quality}
-				inventory_grid.add_child(_make_visual_card(payload, "%s ×%d" % [data.get("name", id), int(entry.count)], "Качество %d" % quality, "◆", Color("#bd9259"), Vector2(34, 62)))
+				inventory_grid.add_child(_make_visual_card(payload, "%s ×%d" % [data.get("name", id), int(entry.count)], "Качество %d" % quality, "◆", Color("#bd9259"), Vector2(76, 94)))
 			else:
 				var action_data: Dictionary = ACTIONS.get(id, {})
 				var payload := {"origin": "inventory", "kind": "action", "id": id}
 				inventory_grid.add_child(_make_visual_card(payload, str(action_data.get("name", id)), "Карта действия", str(action_data.get("symbol", "⚒")), Color("#80a88a"), Vector2(34, 62)))
 		else:
 			var empty := PanelContainer.new()
-			empty.custom_minimum_size = Vector2(34, 62)
+			empty.custom_minimum_size = Vector2(76, 94)
 			empty.add_theme_stylebox_override("panel", _style(Color("#211a15"), Color("#5c4934"), 1))
 			inventory_grid.add_child(empty)
 
