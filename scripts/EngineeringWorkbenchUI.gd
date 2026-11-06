@@ -253,6 +253,8 @@ func _build_inventory_window() -> void:
 	add_child(inventory_window)
 
 	var body := VBoxContainer.new()
+	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.add_theme_constant_override("separation", 5)
 	inventory_window.add_child(body)
 	var drag_bar := MoveHandle.new()
@@ -274,10 +276,13 @@ func _build_inventory_window() -> void:
 	inventory_close.pressed.connect(func(): inventory_window.hide())
 	drag_bar.add_child(inventory_close)
 	var grid_margin := MarginContainer.new()
+	grid_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid_margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	for pair in [["margin_left", 7], ["margin_right", 7], ["margin_top", 4], ["margin_bottom", 7]]:
 		grid_margin.add_theme_constant_override(pair[0], pair[1])
 	body.add_child(grid_margin)
 	var inventory_scroll := ScrollContainer.new()
+	inventory_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	inventory_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	inventory_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	grid_margin.add_child(inventory_scroll)
@@ -550,7 +555,7 @@ func _refresh_inventory() -> void:
 			else:
 				var action_data: Dictionary = ACTIONS.get(id, {})
 				var payload := {"origin": "inventory", "kind": "action", "id": id}
-				inventory_grid.add_child(_make_visual_card(payload, str(action_data.get("name", id)), "Карта действия", str(action_data.get("symbol", "⚒")), Color("#f4f0df"), Vector2(34, 62)))
+				inventory_grid.add_child(_make_visual_card(payload, str(action_data.get("name", id)), "Карта действия", str(action_data.get("symbol", "⚒")), Color("#f4f0df"), Vector2(76, 94)))
 		else:
 			var empty := PanelContainer.new()
 			empty.custom_minimum_size = Vector2(76, 94)
