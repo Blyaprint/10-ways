@@ -19,6 +19,16 @@ class MoveHandle extends Control:
 			target.global_position = get_global_mouse_position() - drag_offset
 			accept_event()
 
+class CardDropRow extends HBoxContainer:
+	var host: Control
+
+	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+		return host != null and host.call("can_drop_to_zone", "hand", data)
+
+	func _drop_data(_at_position: Vector2, data: Variant) -> void:
+		if host != null:
+			host.call("drop_to_zone", "hand", data)
+
 class FullDragCard extends PanelContainer:
 	var host: Control
 	var payload: Dictionary
@@ -72,8 +82,9 @@ func _build_interface() -> void:
 
 	var header := HBoxContainer.new()
 	root.add_child(header)
-	var heading := _label("КУЗНИЦА  /  ИНЖЕНЕРНАЯ МАСТЕРСКАЯ", 17, Color("#f0d6a5"))
+	var heading := _label("КУЗНИЦА  /  ИНЖЕНЕРНАЯ МАСТЕРСКАЯ", 14, Color("#f0d6a5"))
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	heading.size_flags_stretch_ratio = 1.0
 	header.add_child(heading)
 	for entry in [["Заказ", "order"], ["Анализ", "analysis"], ["Чертежи", "blueprints"], ["Инвентарь", "inventory"]]:
 		var button := _button(entry[0], 32)
@@ -164,7 +175,8 @@ func _build_interface() -> void:
 	discard_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	discard_zone.add_child(discard_label)
 	hand_row.add_child(discard_zone)
-	hand_list = HBoxContainer.new()
+	hand_list = CardDropRow.new()
+	hand_list.host = self
 	hand_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hand_list.add_theme_constant_override("separation", 6)
 	hand_row.add_child(hand_list)
@@ -197,6 +209,14 @@ func _build_inventory_window() -> void:
 	title.position = Vector2(8, 5)
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	drag_bar.add_child(title)
+	var inventory_close := Button.new()
+	inventory_close.text = "×"
+	inventory_close.position = Vector2(298, 1)
+	inventory_close.size = Vector2(28, 26)
+	inventory_close.z_index = 2
+	inventory_close.tooltip_text = "Закрыть инвентарь"
+	inventory_close.pressed.connect(func(): inventory_window.hide())
+	drag_bar.add_child(inventory_close)
 	var grid_margin := MarginContainer.new()
 	for pair in [["margin_left", 7], ["margin_right", 7], ["margin_top", 4], ["margin_bottom", 7]]:
 		grid_margin.add_theme_constant_override(pair[0], pair[1])
