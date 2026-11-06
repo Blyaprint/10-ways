@@ -220,6 +220,10 @@ func _build_interface() -> void:
 	side_body.add_child(spacer)
 	side_body.add_child(_label("Связи: выход → вход", 9, Color("#b8a58d")))
 
+	status_label = _label("Перетащи ресурсы и карты действий из инвентаря в руку.", 9, Color("#e7c78d"))
+	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	root.add_child(status_label)
+
 	hand_zone = DropZone.new()
 	hand_zone.host = self
 	hand_zone.zone_kind = "hand"
