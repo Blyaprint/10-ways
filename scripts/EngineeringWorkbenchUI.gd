@@ -39,7 +39,7 @@ class FullDragCard extends PanelContainer:
 
 	func _get_drag_data(_at_position: Vector2) -> Variant:
 		if host != null:
-			set_drag_preview(host.call("_make_drag_preview", title_text, subtitle_text, symbol_text, card_size))
+			set_drag_preview(host.call("_make_drag_preview", title_text, subtitle_text, symbol_text, card_size, payload))
 		return payload
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
@@ -79,7 +79,7 @@ class CardArtwork extends Control:
 							rows = ["##.....", ".##....", "..##...", "#######", "...##..", "...##.."]
 						"bend":
 							rows = ["##.....", ".##....", "..##...", "...##..", "....##.", ".....##"]
-			if rows.is_empty():
+		if rows.is_empty():
 			rows = ["...#...", "..###..", ".#####.", "..###..", "...#..."]
 		var pixel := 5.0
 		var width := 7.0 * pixel
@@ -263,11 +263,15 @@ func _build_inventory_window() -> void:
 	for pair in [["margin_left", 7], ["margin_right", 7], ["margin_top", 4], ["margin_bottom", 7]]:
 		grid_margin.add_theme_constant_override(pair[0], pair[1])
 	body.add_child(grid_margin)
+	var inventory_scroll := ScrollContainer.new()
+	inventory_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	inventory_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	grid_margin.add_child(inventory_scroll)
 	inventory_grid = GridContainer.new()
 	inventory_grid.columns = 4
 	inventory_grid.add_theme_constant_override("h_separation", 4)
 	inventory_grid.add_theme_constant_override("v_separation", 4)
-	grid_margin.add_child(inventory_grid)
+	inventory_scroll.add_child(inventory_grid)
 
 
 func _build_drawer() -> void:
@@ -443,8 +447,8 @@ func _select_blueprint(recipe_id: String) -> void:
 	]
 
 
-func _make_drag_preview(title: String, subtitle: String, symbol: String, preview_size: Vector2) -> Control:
-	return _make_visual_card({}, title, subtitle, symbol, Color("#ffffff"), preview_size)
+func _make_drag_preview(title: String, subtitle: String, symbol: String, preview_size: Vector2, payload: Dictionary) -> Control:
+	return _make_visual_card(payload, title, subtitle, symbol, Color("#ffffff"), preview_size)
 
 
 func _make_visual_card(payload: Dictionary, title: String, subtitle: String, symbol: String, tint: Color, card_size: Vector2) -> FullDragCard:
