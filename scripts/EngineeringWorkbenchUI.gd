@@ -36,6 +36,82 @@ class CardDropRow extends HBoxContainer:
 		if what == NOTIFICATION_DRAG_END:
 			self_modulate = Color.WHITE
 
+class HandFan extends Control:
+	var host: Control
+	var hovered_uid := -1
+
+	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+		var allowed: bool = host != null and bool(host.call("can_drop_to_zone", "hand", data))
+		self_modulate = Color("#b8e8c0") if allowed else Color.WHITE
+		return allowed
+
+	func _drop_data(_at_position: Vector2, data: Variant) -> void:
+		self_modulate = Color.WHITE
+		if host != null:
+			host.call("drop_to_zone", "hand", data)
+
+	func set_hovered_card(uid: int, hovered: bool) -> void:
+		if hovered:
+			hovered_uid = uid
+		elif hovered_uid == uid:
+			hovered_uid = -1
+		layout_cards(true)
+
+	func layout_cards(animated: bool = true) -> void:
+		var count: int = get_child_count()
+		if count == 0:
+			return
+		var available_width: float = maxf(size.x, 720.0)
+		var card_width: float = HAND_CARD_SIZE.x
+		var card_height: float = HAND_CARD_SIZE.y
+		var spacing: float = 0.0
+		if count > 1:
+			spacing = clampf((available_width - card_width) / float(count - 1), 58.0, card_width * 0.82)
+		var total_width: float = card_width + spacing * float(count - 1)
+		var start_x: float = (available_width - total_width) * 0.5
+		var center: float = float(count - 1) * 0.5
+		for index in range(count):
+			var card := get_child(index) as Control
+			if card == null:
+				continue
+			var uid: int = int(card.get_meta("hand_uid", -1))
+			var is_hovered: bool = uid == hovered_uid
+			var offset_from_center: float = float(index) - center
+			var target_position := Vector2(start_x + float(index) * spacing, 9.0 + absf(offset_from_center) * 2.2)
+			if is_hovered:
+				target_position.y -= 20.0
+			elif hovered_uid != -1 and index < _index_for_uid(hovered_uid):
+				target_position.x -= 10.0
+			elif hovered_uid != -1 and index > _index_for_uid(hovered_uid):
+				target_position.x += 10.0
+			var target_rotation: float = offset_from_center * 0.035
+			var target_scale := Vector2.ONE * (1.07 if is_hovered else 1.0)
+			card.pivot_offset = Vector2(card_width * 0.5, card_height)
+			card.z_index = 100 if is_hovered else index
+			if animated:
+				var tween := create_tween()
+				tween.set_parallel(true)
+				tween.set_trans(Tween.TRANS_CUBIC)
+				tween.set_ease(Tween.EASE_OUT)
+				tween.tween_property(card, "position", target_position, 0.18)
+				tween.tween_property(card, "rotation", target_rotation, 0.18)
+				tween.tween_property(card, "scale", target_scale, 0.18)
+			else:
+				card.position = target_position
+				card.rotation = target_rotation
+				card.scale = target_scale
+
+	func _index_for_uid(uid: int) -> int:
+		for index in range(get_child_count()):
+			var card := get_child(index) as Control
+			if card != null and int(card.get_meta("hand_uid", -1)) == uid:
+				return index
+		return -1
+
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_DRAG_END:
+			self_modulate = Color.WHITE
+
 class FullDragCard extends PanelContainer:
 	var host: Control
 	var payload: Dictionary
@@ -44,9 +120,23 @@ class FullDragCard extends PanelContainer:
 	var symbol_text := "◆"
 	var card_size := Vector2(112, 132)
 
+	func _ready() -> void:
+		mouse_entered.connect(_on_mouse_entered)
+		mouse_exited.connect(_on_mouse_exited)
+
+	func _on_mouse_entered() -> void:
+		if host != null and str(payload.get("origin", "")) == "hand":
+			host.call("_set_hand_card_hover", int(payload.get("uid", -1)), true)
+
+	func _on_mouse_exited() -> void:
+		if host != null and str(payload.get("origin", "")) == "hand":
+			host.call("_set_hand_card_hover", int(payload.get("uid", -1)), false)
+
 	func _get_drag_data(_at_position: Vector2) -> Variant:
 		if host != null:
 			set_drag_preview(host.call("_make_drag_preview", title_text, subtitle_text, symbol_text, card_size, payload))
+		if str(payload.get("origin", "")) == "hand":
+			hide()
 		return payload
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
@@ -62,9 +152,7 @@ class FullDragCard extends PanelContainer:
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_DRAG_END:
 			self_modulate = Color.WHITE
-
-
-
+			show()
 
 
 class InventoryDropWindow extends PanelContainer:
@@ -221,7 +309,7 @@ func _build_interface() -> void:
 	hand_zone = DropZone.new()
 	hand_zone.host = self
 	hand_zone.zone_kind = "hand"
-	hand_zone.custom_minimum_size.y = 180
+	hand_zone.custom_minimum_size.y = 184
 	hand_zone.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 1))
 	root.add_child(hand_zone)
 	var hand_margin := MarginContainer.new()
@@ -233,7 +321,7 @@ func _build_interface() -> void:
 	hand_margin.add_child(hand_body)
 	var hand_header := HBoxContainer.new()
 	hand_body.add_child(hand_header)
-	hand_header.add_child(_label("РУКА · 8 СЛОТОВ", 11, Color("#f4f0df")))
+	hand_header.add_child(_label("РУКА", 11, Color("#f4f0df")))
 	hand_count_label = _label("", 9, Color("#f4f0df"))
 	hand_count_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hand_count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -251,10 +339,12 @@ func _build_interface() -> void:
 	discard_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	discard_zone.add_child(discard_label)
 	hand_row.add_child(discard_zone)
-	hand_list = CardDropRow.new()
+	hand_list = HandFan.new()
 	hand_list.host = self
 	hand_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hand_list.add_theme_constant_override("separation", 6)
+	hand_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hand_list.custom_minimum_size.y = 156
+	hand_list.clip_contents = false
 	hand_row.add_child(hand_list)
 
 	_build_inventory_window()
@@ -633,33 +723,30 @@ func _refresh_hand() -> void:
 		return
 	for child in hand_list.get_children():
 		child.queue_free()
-	for index in range(HAND_LIMIT):
-		if index < hand_cards.size():
-			var data: Dictionary = hand_cards[index]
-			var id := str(data.id)
-			if str(data.kind) == "resource":
-				var material: Dictionary = MATERIALS.get(id, {})
-				var quality := int(data.get("quality", 0))
-				var payload := {"origin": "hand", "kind": "resource", "id": id, "uid": data.uid}
-				hand_list.add_child(_make_visual_card(payload, str(material.get("name", id)), "Материал / качество %d" % quality, "◆", Color("#f4f0df"), HAND_CARD_SIZE))
-			else:
-				var action: Dictionary = ACTIONS.get(id, {})
-				var payload := {"origin": "hand", "kind": "action", "id": id, "uid": data.uid}
-				hand_list.add_child(_make_visual_card(payload, str(action.get("name", id)), str(action.get("description", "Многоразовая операция")), str(action.get("symbol", "⚒")), Color("#f4f0df"), HAND_CARD_SIZE))
+	for data in hand_cards:
+		var id := str(data.get("id", ""))
+		var uid := int(data.get("uid", -1))
+		if str(data.get("kind", "")) == "resource":
+			var material: Dictionary = MATERIALS.get(id, {})
+			var quality := int(data.get("quality", 0))
+			var payload := {"origin": "hand", "kind": "resource", "id": id, "uid": uid}
+			var card := _make_visual_card(payload, str(material.get("name", id)), "Материал / качество %d" % quality, "◆", Color("#f4f0df"), HAND_CARD_SIZE)
+			card.set_meta("hand_uid", uid)
+			hand_list.add_child(card)
 		else:
-			var empty := DropZone.new()
-			empty.host = self
-			empty.zone_kind = "hand"
-			empty.custom_minimum_size = HAND_CARD_SIZE
-			empty.add_theme_stylebox_override("panel", _style(Color("#080808"), Color("#f4f0df"), 1))
-			var label := _label("ПУСТО", 8, Color("#f4f0df"))
-			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			empty.add_child(label)
-			hand_list.add_child(empty)
+			var action: Dictionary = ACTIONS.get(id, {})
+			var payload := {"origin": "hand", "kind": "action", "id": id, "uid": uid}
+			var card := _make_visual_card(payload, str(action.get("name", id)), str(action.get("description", "Многоразовая операция")), str(action.get("symbol", "⚒")), Color("#f4f0df"), HAND_CARD_SIZE)
+			card.set_meta("hand_uid", uid)
+			hand_list.add_child(card)
 	if hand_count_label != null:
-		hand_count_label.text = "%d / %d карт" % [hand_cards.size(), HAND_LIMIT]
+		hand_count_label.text = "%d карт" % hand_cards.size()
+	hand_list.call_deferred("layout_cards", false)
 
+
+func _set_hand_card_hover(uid: int, hovered: bool) -> void:
+	if hand_list != null:
+		hand_list.set_hovered_card(uid, hovered)
 
 func _refresh_all() -> void:
 	_refresh_inventory()
