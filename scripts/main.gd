@@ -1,6 +1,6 @@
 extends Control
 
-const CRAFTING_WORKBENCH_SCENE := preload("res://scenes/CraftingWorkbench.tscn")
+const CRAFTING_WORKBENCH_SCENE := preload("res://scenes/EngineeringWorkbench.tscn")
 
 @onready var order_panel: Control = get_node_or_null("GameContent/OrderPanel")
 @onready var card_hand: Control = get_node_or_null("GameContent/CardHand")
@@ -22,7 +22,7 @@ func _ready() -> void:
 	var game_content := get_node_or_null("GameContent")
 	if game_content:
 		crafting_workbench = CRAFTING_WORKBENCH_SCENE.instantiate() as Control
-		crafting_workbench.name = "CraftingWorkbench"
+		crafting_workbench.name = "EngineeringWorkbench"
 		crafting_workbench.z_index = 4096
 		game_content.add_child(crafting_workbench)
 		crafting_workbench.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
