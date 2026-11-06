@@ -2,9 +2,10 @@ extends Control
 
 signal craft_completed(item_id: String, quality: int)
 
-const MATERIALS := CraftingDatabase.MATERIALS
-const ACTIONS := CraftingDatabase.ACTIONS
-const RECIPES := CraftingDatabase.RECIPES
+const CraftingData = preload("res://scripts/CraftingDatabase.gd")
+const MATERIALS := CraftingData.MATERIALS
+const ACTIONS := CraftingData.ACTIONS
+const RECIPES := CraftingData.RECIPES
 
 var inventory: Dictionary = {"iron": 2, "copper": 2, "coal": 3}
 var item_qualities: Dictionary = {"iron": 70, "copper": 72}
@@ -13,7 +14,7 @@ var discovered_recipes: Array[String] = ["iron_heat"]
 var experiment_attempts: Dictionary = {}
 var selected_material_id := ""
 var selected_actions: Array[String] = []
-var current_order: Variant = null
+var current_order: Order = null
 var blueprint_used := false
 
 var inventory_list: VBoxContainer
@@ -35,7 +36,7 @@ func _ready() -> void:
 	_refresh_all()
 
 
-func set_order(order: Variant) -> void:
+func set_order(order: Order) -> void:
 	current_order = order
 	_refresh_order()
 
@@ -233,7 +234,7 @@ func _refresh_plan() -> void:
 		var names: Array[String] = []
 		for action_id in selected_actions:
 			names.append(str(ACTIONS[action_id].name))
-		action_sequence_label.text = "Последовательность: " + " → ".join(names)
+		action_sequence_label.text = "Последовательность: " + " → ".join(PackedStringArray(names))
 	craft_button.disabled = selected_material_id == "" or selected_actions.is_empty()
 
 
@@ -244,10 +245,10 @@ func _refresh_order() -> void:
 		order_quality_label.text = "Качество: —"
 		delivery_button.disabled = true
 		return
-	order_title_label.text = "Заказ: %s" % str(current_order.get("client_name"))
-	var item_id := str(current_order.get("item_id"))
+	order_title_label.text = "Заказ: %s" % current_order.client_name
+	var item_id := current_order.item_id
 	var item_name := str(MATERIALS.get(item_id, {}).get("name", item_id))
-	order_description_label.text = "Требуется: %s\nМинимальное качество: %d" % [item_name, int(current_order.get("required_quality"))]
+	order_description_label.text = "Требуется: %s\nМинимальное качество: %d" % [item_name, current_order.required_quality]
 	order_quality_label.text = "Качество изделия: %d" % int(item_qualities.get(item_id, 0))
 	delivery_button.disabled = int(inventory.get(item_id, 0)) <= 0
 
@@ -283,7 +284,7 @@ func _on_craft_pressed() -> void:
 			matching_recipe = recipe
 			break
 	if matching_recipe_id == "":
-		var attempt_key := selected_material_id + "|" + ",".join(selected_actions)
+		var attempt_key := selected_material_id + "|" + ",".join(PackedStringArray(selected_actions))
 		experiment_attempts[attempt_key] = int(experiment_attempts.get(attempt_key, 0)) + 1
 		status_label.text = "Рецепт не найден. Материал не потрачен. Попробуй изменить порядок или набор действий."
 		if int(experiment_attempts[attempt_key]) >= 2:
@@ -297,11 +298,10 @@ func _on_craft_pressed() -> void:
 	var was_discovered := discovered_recipes.has(matching_recipe_id)
 	if not was_discovered:
 		discovered_recipes.append(matching_recipe_id)
+	var input_quality := int(item_qualities.get(selected_material_id, 70))
 	_consume_item(selected_material_id, 1)
 	if coal_cost > 0:
 		_consume_item("coal", coal_cost)
-
-	var input_quality := int(item_qualities.get(selected_material_id, 70))
 	var output_id := str(matching_recipe.output)
 	var output_quality := clampi(int(matching_recipe.base_quality) + int((input_quality - 70) * 0.25), 40, 100)
 	inventory[output_id] = int(inventory.get(output_id, 0)) + 1
