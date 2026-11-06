@@ -328,7 +328,9 @@ func _show_history_record(index: int) -> void:
 		"Изделие: %s" % str(record.get("item_name", "")),
 		"Качество: %s/100" % str(record.get("quality", 0)),
 		"Требовалось: %s/100" % str(record.get("required_quality", 0)),
+		"Операций: %s" % str(record.get("operations", 0)),
 		"Расход угля: %s" % str(record.get("coal_used", 0)),
+		"Цепочка: %s" % ", ".join(record.get("recipe_chain", [])),
 		"Результат: %s" % str(record.get("result", "Заказ сдан"))
 	]:
 		var label := _label(line, 10, Color("#d9c5a5"))
@@ -368,7 +370,7 @@ func _select_blueprint(recipe_id: String) -> void:
 		return
 	var input_id := str(recipe.get("input", ""))
 	var output_id := str(recipe.get("output", ""))
-	var action_names: Array[String] = []
+	var action_names := PackedStringArray()
 	for action_id in recipe.get("actions", []):
 		action_names.append(str(ACTIONS.get(str(action_id), {}).get("name", action_id)))
 	blueprint_detail.text = "Вход: %s\nОперация: %s\nВыход: %s\nУголь: %d" % [
