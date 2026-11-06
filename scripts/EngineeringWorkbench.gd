@@ -66,6 +66,7 @@ var node_serial := 0
 
 var inventory_zone: DropZone
 var hand_zone: DropZone
+var discard_zone: DropZone
 var inventory_list: VBoxContainer
 var hand_list: HBoxContainer
 var graph: GraphCanvas
@@ -138,6 +139,7 @@ func _build_interface() -> void:
 	inv_body.add_child(_label("Перетащи предмет в руку", 9, Color("#b8a58d")))
 	var inv_scroll := ScrollContainer.new()
 	inv_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	inv_scroll.mouse_filter = Control.MOUSE_FILTER_PASS
 	inv_body.add_child(inv_scroll)
 	inventory_list = VBoxContainer.new()
 	inventory_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -244,8 +246,19 @@ func _build_interface() -> void:
 	hand_count_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hand_count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	hand_header.add_child(hand_count_label)
+	discard_zone = DropZone.new()
+	discard_zone.host = self
+	discard_zone.zone_kind = "discard"
+	discard_zone.custom_minimum_size = Vector2(92, 25)
+	discard_zone.add_theme_stylebox_override("panel", _style(Color("#482321"), Color("#a45b4f"), 1))
+	var discard_label := _label("СБРОСИТЬ", 9, Color("#e2b0a0"))
+	discard_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	discard_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	discard_zone.add_child(discard_label)
+	hand_header.add_child(discard_zone)
 	hand_list = HBoxContainer.new()
 	hand_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hand_list.mouse_filter = Control.MOUSE_FILTER_PASS
 	hand_list.add_theme_constant_override("separation", 5)
 	hand_body.add_child(hand_list)
 
@@ -291,14 +304,18 @@ func _make_card(payload: Dictionary, title: String, subtitle: String, tint: Colo
 	var margin := MarginContainer.new()
 	for pair in [["margin_left", 5], ["margin_right", 5], ["margin_top", 4], ["margin_bottom", 4]]:
 		margin.add_theme_constant_override(pair[0], pair[1])
+	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(margin)
 	var body := VBoxContainer.new()
+	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_theme_constant_override("separation", 2)
 	margin.add_child(body)
 	var title_label := _label(title, 10, Color("#f0d6a5"))
+	title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.add_child(title_label)
 	var sub_label := _label(subtitle, 8, Color("#c6ad8c"))
+	sub_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	sub_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.add_child(sub_label)
 	return card
@@ -351,6 +368,7 @@ func _refresh_hand() -> void:
 		else:
 			var empty := PanelContainer.new()
 			empty.custom_minimum_size = Vector2(65, 48)
+			empty.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			empty.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			empty.add_theme_stylebox_override("panel", _style(Color("#241d17"), Color("#66513a"), 1))
 			empty.add_child(_label("ПУСТО", 8, Color("#88745d")))
@@ -364,6 +382,8 @@ func can_drop_to_zone(zone_kind: String, data: Variant) -> bool:
 		return str(data.get("origin", "")) == "inventory" and hand_cards.size() < HAND_LIMIT
 	if zone_kind == "inventory":
 		return str(data.get("origin", "")) == "hand"
+	if zone_kind == "discard":
+		return str(data.get("origin", "")) == "hand" and str(data.get("kind", "")) == "resource"
 	return false
 
 
@@ -374,7 +394,19 @@ func drop_to_zone(zone_kind: String, data: Variant) -> void:
 		_move_inventory_to_hand(data)
 	elif zone_kind == "inventory":
 		_return_hand_card(data)
+	elif zone_kind == "discard":
+		_discard_hand_resource(data)
 	_refresh_all()
+
+
+func _discard_hand_resource(data: Dictionary) -> void:
+	var uid := int(data.get("uid", -1))
+	var index := _find_hand_card_index(uid)
+	if index < 0 or str(hand_cards[index].get("kind", "")) != "resource":
+		return
+	var discarded: Dictionary = hand_cards[index]
+	hand_cards.remove_at(index)
+	_update_status("Ресурс «%s» выброшен и потерян." % MATERIALS.get(str(discarded.id), {}).get("name", discarded.id))
 
 
 func can_drop_to_card(_target: Dictionary, data: Variant) -> bool:
