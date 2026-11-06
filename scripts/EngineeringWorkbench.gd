@@ -22,7 +22,7 @@ class DragCard extends PanelContainer:
 		return payload
 
 	func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-		return host != null and host.call("can_drop_to_card", payload, data))
+		return host != null and host.call("can_drop_to_card", payload, data)
 
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		if host != null:
@@ -42,7 +42,7 @@ class DropZone extends PanelContainer:
 	func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		self_modulate = Color.WHITE
 		if host != null:
-			host.call("drop_to_zone", zone_kind, data))
+			host.call("drop_to_zone", zone_kind, data)
 
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_DRAG_END:
