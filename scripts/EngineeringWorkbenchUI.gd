@@ -520,16 +520,30 @@ func _on_delivery_pressed() -> void:
 	if int(inventory.get(item_id, 0)) <= 0:
 		return
 	var quality := int(item_qualities.get(item_id, 0))
-	var record := {
+	var total_coal := 0
+	var total_operations := 0
+	var complete_chain := PackedStringArray()
+	for process_step in order_process_history:
+		total_coal += int(process_step.get("coal_used", 0))
+		total_operations += int(process_step.get("operations", 0))
+		for recipe_id in process_step.get("recipe_chain", []):
+			complete_chain.append(str(recipe_id))
+	if order_process_history.is_empty():
+		total_coal = last_coal_used
+		total_operations = last_action_count
+		for recipe_id in last_recipe_chain:
+			complete_chain.append(recipe_id)
+	var record :=
 		"date_time": Time.get_datetime_string_from_system(),
 		"client_name": current_order.client_name,
 		"item_id": item_id,
 		"item_name": str(MATERIALS.get(item_id, {}).get("name", item_id)),
 		"quality": quality,
 		"required_quality": current_order.required_quality,
-		"coal_used": last_coal_used,
-		"operations": last_action_count,
-		"recipe_chain": last_recipe_chain.duplicate(),
+		"coal_used": total_coal,
+		"operations": total_operations,
+		"recipe_chain": Array(complete_chain),
+		"process_steps": order_process_history.duplicate(true),
 		"result": "Заказ выполнен" if quality >= current_order.required_quality else "Качество ниже требования"
 	}
 	history.append(record)
@@ -560,6 +574,9 @@ func _save_history() -> void:
 
 
 func set_order(order: Order) -> void:
+	var order_changed := current_order != order
 	super.set_order(order)
+	if order_changed:
+		order_process_history.clear()
 	if drawer != null and drawer.visible and drawer_mode == "order":
 		_refresh_drawer()
