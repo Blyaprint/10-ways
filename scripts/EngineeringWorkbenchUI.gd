@@ -613,6 +613,7 @@ func _make_visual_card(payload: Dictionary, title: String, subtitle: String, sym
 	card.symbol_text = symbol
 	card.card_size = card_size
 	card.custom_minimum_size = card_size
+	card.size = card_size
 	card.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	card.mouse_filter = Control.MOUSE_FILTER_STOP
 
@@ -763,6 +764,7 @@ func _set_hand_card_hover(uid: int, hovered: bool) -> void:
 
 func _on_hand_card_drag_started(_uid: int) -> void:
 	if hand_list != null:
+		hand_list.hovered_uid = -1
 		hand_list.layout_cards(true)
 
 func _on_hand_card_drag_ended(_uid: int) -> void:
